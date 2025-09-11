@@ -1,0 +1,24 @@
+lib/
+├── main.dart
+├── core/
+│   └── ... (ثوابت، أدوات، themes، network... إلخ)
+├── features/
+│   └── theme/  ← كما شرحنا سابقًا
+└── pages/
+    ├── home/
+    │   ├── home_page.dart             ← الشاشة الرئيسية
+    │   ├── home_controller.dart       ← منطق الصفحة (Provider / GetX / Bloc)
+    │   ├── home_service.dart          ← اتصالات API أو قاعدة بيانات خاصة بالصفحة
+    │   └── widgets/
+    │       ├── home_app_bar.dart
+    │       └── home_card.dart
+    ├── settings/
+    │   ├── settings_page.dart
+    │   ├── settings_controller.dart
+    │   └── widgets/
+    │       └── theme_toggle_item.dart
+    └── profile/
+        ├── profile_page.dart
+        ├── profile_controller.dart
+        └── widgets/
+            └── profile_avatar.dart

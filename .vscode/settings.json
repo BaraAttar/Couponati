@@ -1,0 +1,10 @@
+{
+  "[dart]": {
+    "editor.defaultFormatter": "Dart-Code.dart-code",
+    "editor.formatOnSave": false,
+    "editor.formatOnType": false,
+    "editor.formatOnPaste": false
+  },
+  "editor.defaultFormatter": "Dart-Code.flutter",
+  "editor.formatOnSave": true
+}

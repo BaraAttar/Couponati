@@ -1,0 +1,71 @@
+name: my_app
+description: "A new Flutter project."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.8.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  provider: ^6.1.5+1
+  flutter_native_splash: ^2.4.6
+  get:
+  http:
+  carousel_slider:
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+
+flutter:
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/icons/
+
+  #   - images/a_dot_ham.jpeg
+  # An image asset can refer to one or more resolution-specific "variants", see
+  # https://flutter.dev/to/resolution-aware-images
+
+  # For details regarding adding assets from package dependencies, see
+  # https://flutter.dev/to/asset-from-package
+
+  # To add custom fonts to your application, add a fonts section here,
+  # in this "flutter" section. Each entry in this list should have a
+  # "family" key with the font family name, and a "fonts" key with a
+  # list giving the asset and other descriptors for the font. For
+  # example:
+  fonts:
+    - family: Tajawal
+      fonts:
+        - asset: assets/fonts/Tajawal/Tajawal-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/Tajawal/Tajawal-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Tajawal/Tajawal-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Tajawal/Tajawal-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Tajawal/Tajawal-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Tajawal/Tajawal-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/Tajawal/Tajawal-Black.ttf
+          weight: 900
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/to/font-from-package
+
+# flutter_native_splash:
+#   color: "#FFFFFF"
+#   color_dark: "#000000"
+#   image: assets/logos/logo.png
+#   image_dark: assets/logos/logo.png
+#   web: false
