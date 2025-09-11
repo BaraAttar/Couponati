@@ -29,11 +29,25 @@ class _MainlayoutState extends State<Mainlayout> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_currentIndex],
-      bottomNavigationBar: MainNavBar(
-        currentIndex: _currentIndex,
-        onTap: _onTabSelected,
+      body: Stack(
+        children: [
+          _pages[_currentIndex],
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: MainNavBar(
+              currentIndex: _currentIndex,
+              onTap: _onTabSelected,
+            ),
+          ),
+        ],
       ),
+      // body: _pages[_currentIndex],
+      // bottomNavigationBar: MainNavBar(
+      //   currentIndex: _currentIndex,
+      //   onTap: _onTabSelected,
+      // ),
     );
   }
 }

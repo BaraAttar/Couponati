@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 final ColorScheme lightColorScheme = ColorScheme.light(
-  surfaceBright: Colors.grey.shade100,
+  surfaceBright: Colors.white,
   surfaceDim: Colors.grey.shade400,
-  surface: Colors.grey.shade200,
+  surface: Colors.white,
   primary: Colors.grey.shade900,
   secondary: Colors.grey.shade300,
 );
