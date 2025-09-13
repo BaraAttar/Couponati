@@ -13,15 +13,7 @@ class Header extends StatelessWidget {
         filter: ImageFilter.blur(sigmaX: 20.0, sigmaY: 20.0),
         child: Container(
           decoration: BoxDecoration(
-            color: theme.colorScheme.surface.withValues(alpha: 0.7),
-            // ظل خفيف للفصل بين Header والمحتوى
-            // boxShadow: [
-            //   BoxShadow(
-            //     color: Colors.black.withValues(alpha: 0.05),
-            //     blurRadius: 10,
-            //     offset: const Offset(0, 2),
-            //   ),
-            // ],
+            color: theme.colorScheme.surface.withValues(alpha: 0.7)
           ),
           width: MediaQuery.of(context).size.width * 1,
           padding: const EdgeInsets.only(

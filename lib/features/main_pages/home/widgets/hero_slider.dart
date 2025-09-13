@@ -1,46 +1,85 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:my_app/features/main_pages/home/widgets/hero_slider_logic.dart';
 
 class HeroSlider extends StatelessWidget {
-  const HeroSlider({super.key});
+  HeroSlider({super.key});
 
-  static const List<String> _bannerItems = [
-    'https://eksmly.com/storage/728/IMG_2099.png',
-    'https://eksmly.com/storage/726/IMG_2097.jpeg',
-  ];
+  final BannerController controller = BannerController();
 
   @override
   Widget build(BuildContext context) {
-    return CarouselSlider.builder(
-      itemCount: _bannerItems.length,
-      itemBuilder: (context, index, realIndex) {
-        return _buildBannerItem(context, _bannerItems[index]);
+    return FutureBuilder<List<BannerModel>>(
+      future: controller.fetchBanners(),
+      builder: (context, snapshot) {
+        // if (snapshot.connectionState == ConnectionState.waiting) {
+        //   return SizedBox(
+        //     height: MediaQuery.of(context).size.height * 0.25,
+        //     child: const Center(child: CircularProgressIndicator()),
+        //   );
+        // }
+
+        List<BannerModel> banners = snapshot.data ?? [];
+        if (banners.isEmpty) {
+          banners = [BannerModel(id: "", name: "", image: "", active: true)];
+        }
+
+        return CarouselSlider.builder(
+          itemCount: banners.length,
+          itemBuilder: (context, index, realIndex) {
+            return _buildBannerItem(context, banners[index].image);
+          },
+          options: CarouselOptions(
+            autoPlay: true,
+            height: MediaQuery.of(context).size.height * 0.25,
+            viewportFraction: 0.8,
+            enlargeCenterPage: true,
+            enlargeStrategy: CenterPageEnlargeStrategy.scale,
+            enlargeFactor: 0.2,
+          ),
+        );
       },
-      options: CarouselOptions(
-        autoPlay: true,
-        height: MediaQuery.of(context).size.height * 0.25,
-        viewportFraction: 0.8,
-        enlargeCenterPage: true,
-        enlargeStrategy: CenterPageEnlargeStrategy.scale,
-        enlargeFactor: 0.2,
-      ),
     );
   }
 
   Widget _buildBannerItem(BuildContext context, String imagePath) {
     return Container(
       margin: const EdgeInsets.only(top: 50),
-      decoration: BoxDecoration(
+      child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
-        color: Colors.grey[300],
-        image: DecorationImage(
-          image: NetworkImage(imagePath),
-          fit: BoxFit.cover,
-          onError: (_, __) {},
+        child: Container(
+          color: Colors.grey[300],
+          child: _buildImageWithFallback(imagePath),
         ),
       ),
-      width: MediaQuery.of(context).size.width * 0.8,
     );
   }
 
+  Widget _imageNotFound() {
+    return Container(
+      color: Colors.grey.shade100,
+      width: double.infinity,
+      height: double.infinity,
+      child: Image.asset(
+        "assets/images/404-page-not-found-1-24.png",
+        fit: BoxFit.contain,
+      ),
+    );
+  }
+
+  Widget _buildImageWithFallback(String? imagePath) {
+    if (imagePath == null || imagePath.isEmpty) {
+      return _imageNotFound();
+    }
+
+    return Image.network(
+      imagePath,
+      fit: BoxFit.cover,
+      width: double.infinity,
+      height: double.infinity,
+      errorBuilder: (context, error, stackTrace) {
+        return _imageNotFound();
+      },
+    );
+  }
 }
