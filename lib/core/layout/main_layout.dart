@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:my_app/features/main_pages/favourites/favourites.page.dart';
-import 'package:my_app/features/main_pages/settings/settings.page.dart';
-import 'package:my_app/features/main_pages/home/home_page.dart';
-import 'package:my_app/features/main_pages/main_nav_bar.dart';
+import 'package:my_app/features/favourites/favourites_page.dart';
+import 'package:my_app/features/settings/settings_page.dart';
+import 'package:my_app/features/home/home_page.dart';
+import 'package:my_app/core/layout/main_nav_bar.dart';
 
 class Mainlayout extends StatefulWidget {
   const Mainlayout({super.key});

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:my_app/features/main_pages/home/widgets/categories_slider.dart';
-import 'package:my_app/features/main_pages/home/widgets/hero_slider.dart';
-import 'package:my_app/features/main_pages/home/widgets/search_bar.dart';
-import 'package:my_app/features/main_pages/home/widgets/stores_list.dart';
+import 'package:my_app/features/home/widgets/banners/banners_slider.dart';
+import 'package:my_app/features/home/widgets/categories/categories_slider.dart';
+import 'package:my_app/features/home/widgets/search_bar/search_bar.dart';
+import 'package:my_app/features/home/widgets/stores/stores_list.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -17,7 +17,7 @@ class HomePage extends StatelessWidget {
               SliverToBoxAdapter(
                 child: SizedBox(height: 120), // مكان الـ Header
               ),
-              SliverToBoxAdapter(child: HeroSlider()),
+              SliverToBoxAdapter(child: BannerSlider()),
               SliverToBoxAdapter(child: CategoriesSlider()),
               StoresList()
             ],

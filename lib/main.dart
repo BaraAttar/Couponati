@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart'; // 👈 مهم!
-import 'package:my_app/features/main_pages/main_layout.dart';
-import 'package:my_app/features/theme/theme.dart';
-import 'package:my_app/features/theme/theme.provider.dart';
+import 'package:my_app/core/layout/main_layout.dart';
+import 'package:my_app/core/theme/theme.dart';
+import 'package:my_app/core/theme/theme.provider.dart';
 import 'package:provider/provider.dart';
 
 void main() {

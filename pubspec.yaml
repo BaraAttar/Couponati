@@ -17,6 +17,7 @@ dependencies:
   get:
   http:
   carousel_slider:
+  flutter_bounceable: ^1.2.0
 
 dev_dependencies:
   flutter_test:

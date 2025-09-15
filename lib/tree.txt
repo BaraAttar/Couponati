@@ -1,0 +1,33 @@
+.
+├── app
+│   └── config.dart
+├── core
+│   ├── layout
+│   │   ├── main_layout.dart
+│   │   └── main_nav_bar.dart
+│   └── theme
+│       ├── theme.dart
+│       └── theme.provider.dart
+├── features
+│   ├── coupon_card
+│   │   └── coupon_card.dart
+│   ├── favourites
+│   │   └── favourites_page.dart
+│   ├── home
+│   │   ├── home_page.dart
+│   │   └── widgets
+│   │       ├── banners
+│   │       │   ├── banners_slider_logic.dart
+│   │       │   └── banners_slider.dart
+│   │       ├── categories
+│   │       │   └── categories_slider.dart
+│   │       ├── search_bar
+│   │       │   └── search_bar.dart
+│   │       └── stores
+│   │           └── stores_list.dart
+│   └── settings
+│       └── settings_page.dart
+├── main.dart
+└── tree.txt
+
+15 directories, 16 files
