@@ -24,10 +24,11 @@
 │   │       ├── search_bar
 │   │       │   └── search_bar.dart
 │   │       └── stores
+│   │           ├── store_list_logic.dart
 │   │           └── stores_list.dart
 │   └── settings
 │       └── settings_page.dart
 ├── main.dart
 └── tree.txt
 
-15 directories, 16 files
+15 directories, 17 files

@@ -4,14 +4,14 @@ import 'package:my_app/features/home/widgets/banners/banners_slider_logic.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 
 // ====================== BannerSlider (StatefulWidget) ======================
-class BannerSlider extends StatefulWidget {
-  const BannerSlider({super.key});
+class BannerSliderView extends StatefulWidget {
+  const BannerSliderView({super.key});
 
   @override
-  State<BannerSlider> createState() => _BannerSliderState();
+  State<BannerSliderView> createState() => _BannerSliderState();
 }
 
-class _BannerSliderState extends State<BannerSlider> {
+class _BannerSliderState extends State<BannerSliderView> {
   late final Future<List<BannerModel>> _bannersFuture;
   final BannerController controller = BannerController();
 
@@ -89,9 +89,7 @@ class BannerItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Bounceable(
-      onTap: () {
-        print(banner?.name);
-      },
+      onTap: () {},
       duration: const Duration(milliseconds: 200),
       child: Container(
         margin: const EdgeInsets.only(top: 50),

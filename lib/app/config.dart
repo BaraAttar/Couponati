@@ -4,4 +4,5 @@ class AppConfig {
 
   static const String getCoupon = "$baseUrl/coupon";
   static const String getBanners = "$baseUrl/banner";
+  static const String getStores = "$baseUrl/store";
 }

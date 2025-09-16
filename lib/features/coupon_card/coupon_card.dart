@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:my_app/features/home/widgets/stores/stores_list.dart';
+import 'package:my_app/features/home/widgets/stores/store_list_logic.dart';
 
 class CouponCard extends StatelessWidget {
-  final StoreItem store; // استلام بيانات المتجر
+  final StoreModel store;
 
   const CouponCard({super.key, required this.store});
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:my_app/features/home/widgets/banners/banners_slider.dart';
+import 'package:my_app/features/home/widgets/banners/banners_slider_view.dart';
 import 'package:my_app/features/home/widgets/categories/categories_slider.dart';
 import 'package:my_app/features/home/widgets/search_bar/search_bar.dart';
-import 'package:my_app/features/home/widgets/stores/stores_list.dart';
+import 'package:my_app/features/home/widgets/stores/stores_list_view.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -17,17 +17,12 @@ class HomePage extends StatelessWidget {
               SliverToBoxAdapter(
                 child: SizedBox(height: 120), // مكان الـ Header
               ),
-              SliverToBoxAdapter(child: BannerSlider()),
+              SliverToBoxAdapter(child: BannerSliderView()),
               SliverToBoxAdapter(child: CategoriesSlider()),
-              StoresList()
+              StoresListView()
             ],
           ),
-          const Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: Header(),
-          ),
+          const Positioned(top: 0, left: 0, right: 0, child: Header()),
         ],
       ),
     );
