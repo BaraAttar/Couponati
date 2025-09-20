@@ -2,25 +2,45 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:my_app/app/config.dart';
 import 'package:my_app/core/logger/logger_service.dart';
+import 'package:my_app/features/coupon_card/coupon_card_model.dart';
 
 /// ===================== Store Model =====================
 class StoreModel {
   final String id;
   final String name;
-  final String? icon;
+  final String icon;
+  final String description;
+  final List<CouponModel> coupon;
 
   StoreModel({
     required this.id,
     required this.name,
     required this.icon,
-  });
+    required this.description,
+    List<CouponModel>? coupon,
+  }) : coupon = coupon ?? [];
 
   factory StoreModel.fromJson(Map<String, dynamic> json) {
+    final couponsJson = json['coupons'] as List<dynamic>? ?? [];
+    final coupons = couponsJson.map((c) => CouponModel.fromJson(c)).toList();
+
     return StoreModel(
       id: json['_id']?.toString() ?? '',
       name: json['name']?.toString() ?? 'Unnamed Store',
       icon: json['icon']?.toString() ?? '',
+      description: json['description']?.toString() ?? '',
+      coupon: coupons,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      '_id': id,
+      'name': name,
+      'icon': icon,
+      'description': description,
+      'coupons': coupon.map((c) => c.toJson()).toList(),
+    };
   }
 }
 
@@ -29,8 +49,8 @@ class StoreController {
   /// Fetches the list of stores from API
   Future<List<StoreModel>> fetchStores() async {
     try {
-      final uri = Uri.parse(AppConfig.getStores); // تأكد أن الرابط صحيح
-      final response = await http.get(uri).timeout(const Duration(seconds: 10));
+      final uri = Uri.parse(AppConfig.getStores);
+      final response = await http.get(uri);
 
       if (response.statusCode == 200) {
         final decoded = jsonDecode(response.body);
@@ -40,16 +60,16 @@ class StoreController {
           final List<dynamic> data = decoded['data'];
           return data.map((json) => StoreModel.fromJson(json)).toList();
         } else {
-          AppLogger.w('Warning: "data" field missing or not a list.');
-          return [];
+          AppLogger.d('Warning: "data" field missing or not a list.');
+          throw Exception('"data" field missing or not a list.');
         }
       } else {
-        AppLogger.e('Error: HTTP ${response.statusCode}');
-        return [];
+        AppLogger.d('Error: HTTP ${response.statusCode}');
+        throw Exception('HTTP ${response.statusCode}');
       }
     } catch (e) {
-      AppLogger.e('Exception while fetching stores: $e');
-      return [];
+      AppLogger.d('Exception while fetching stores: $e');
+      rethrow;
     }
   }
 }

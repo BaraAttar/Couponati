@@ -63,6 +63,9 @@ class BannerCarousel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     final double screenWidth = MediaQuery.of(context).size.width;
+    final double bannerHeight = screenWidth * 9 / 16; // نسبة 16:9 (1080x1920)
+
     return CarouselSlider.builder(
       itemCount: banners.length,
       itemBuilder: (context, index, realIndex) {
@@ -70,8 +73,8 @@ class BannerCarousel extends StatelessWidget {
       },
       options: CarouselOptions(
         autoPlay: true,
-        height: MediaQuery.of(context).size.height * 0.25,
-        viewportFraction: 0.8,
+        height: bannerHeight,
+        viewportFraction: 0.9,
         enlargeCenterPage: true,
         enlargeStrategy: CenterPageEnlargeStrategy.scale,
         enlargeFactor: 0.2,
