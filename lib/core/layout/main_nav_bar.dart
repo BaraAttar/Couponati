@@ -1,3 +1,4 @@
+// lib/core/layout/main_nav_bar.dart
 import 'dart:ui';
 import 'package:flutter/material.dart';
 

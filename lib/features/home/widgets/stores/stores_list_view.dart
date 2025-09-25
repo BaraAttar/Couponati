@@ -1,220 +1,145 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:my_app/core/logger/logger_service.dart';
-import 'package:my_app/features/coupon_card/coupon_card.dart';
-import 'package:my_app/features/home/widgets/stores/store_list_logic.dart';
+import 'package:my_app/features/home/widgets/stores/store_controller.dart';
+import 'package:my_app/features/home/widgets/stores/store_model.dart';
+import 'package:my_app/features/home/widgets/stores/widgets/store_card.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-// ====================== Stores List (Main Widget) ======================
 class StoresListView extends StatefulWidget {
-  const StoresListView({super.key});
+  final ScrollController controller;
+  const StoresListView({super.key, required this.controller});
 
   @override
-  State<StoresListView> createState() => _StoresListState();
+  State<StoresListView> createState() => StoresListViewState();
 }
 
-class _StoresListState extends State<StoresListView> {
-  late Future<List<StoreModel>> _fetchStores;
+class StoresListViewState extends State<StoresListView> {
   final StoreController _controller = StoreController();
-  Key _futureKey = UniqueKey();
+  List<StoreModel> _stores = [];
+  bool _isLoading = false;
+  String? _error;
+  bool _hasMoreData = true;
+  int _currentPage = 1;
+  int _totalCount = 0;
+  String? _currentCategoryId;
 
   @override
   void initState() {
     super.initState();
-    _loadStores();
+    loadStores(page: 1);
+    widget.controller.addListener(_scrollListener);
   }
 
-  void _loadStores() {
-    _fetchStores = _controller.fetchStores();
-  }
+  Future<void> refreshStores({String? categoryId}) async {
+    _currentCategoryId = categoryId;
 
-  void _reloadStores() {
     setState(() {
-      _loadStores();
-      _futureKey = UniqueKey();
+      _stores.clear();
+      _currentPage = 1;
+      _hasMoreData = true;
+      _error = null;
     });
+
+    await loadStores(page: 1, categoryId: _currentCategoryId);
   }
 
-  Widget _buildErrorWidget() {
-    return SliverToBoxAdapter(
-      child: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              'فشل تحميل المتاجر',
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _reloadStores,
-              child: const Text('إعادة المحاولة'),
-            ),
-          ],
-        ),
-      ),
-    );
+  Future<void> loadStores({int page = 1, String? categoryId}) async {
+    final catId = categoryId ?? _currentCategoryId;
+
+    if (!mounted) return;
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+
+    try {
+      final result = await _controller.fetchStores(
+        page: page,
+        categoryId: catId,
+      );
+
+      if (!mounted) return;
+      setState(() {
+        if (page == 1) _stores = result.data;
+        else _stores.addAll(result.data);
+
+        _isLoading = false;
+        _totalCount = result.totalCount;
+        _hasMoreData = _stores.length < _totalCount;
+        _currentPage = page;
+      });
+    } catch (error) {
+      if (!mounted) return;
+      setState(() {
+        _error = error.toString();
+        _isLoading = false;
+      });
+      AppLogger.d(_error.toString());
+    }
   }
 
-  Widget _buildStoresList(List<StoreModel> stores, bool isLoading) {
+  void _scrollListener() {
+    final maxScroll = widget.controller.position.maxScrollExtent;
+    final currentScroll = widget.controller.position.pixels;
+
+    if (_isLoading || !_hasMoreData) return;
+    if (currentScroll >= maxScroll - 100) _loadNextPage();
+  }
+
+  Future<void> _loadNextPage() async {
+    if (_isLoading || !_hasMoreData) return;
+    final nextPage = _currentPage + 1;
+    await loadStores(page: nextPage, categoryId: _currentCategoryId);
+  }
+
+  @override
+  void dispose() {
+    widget.controller.removeListener(_scrollListener);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_error != null && _stores.isEmpty) {
+      return SliverToBoxAdapter(
+          child: Center(child: Text("خطأ: $_error")));
+    }
+
     return SliverPadding(
       padding: const EdgeInsets.only(bottom: 100),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
-          (context, index) => Skeletonizer(
-            enabled: isLoading,
-            child: StoreItemTile(
-              store: isLoading ? _getSkeletonStore() : stores[index],
-            ),
-          ),
-          childCount: isLoading ? 4 : stores.length,
+          (context, index) {
+            if (index < _stores.length) {
+              return StoreCard(store: _stores[index]);
+            } else if (_isLoading) {
+              return Column(
+                children: List.generate(
+                  3,
+                  (_) => Skeletonizer(
+                    child: StoreCard(
+                      store: StoreModel(
+                        id: "skeleton",
+                        name: "Loading Store...",
+                        icon: "",
+                        description: "Please wait...",
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            } else if (!_hasMoreData) {
+              return const Padding(
+                padding: EdgeInsets.all(16),
+                child: Center(child: Text("لا توجد متاجر أخرى")),
+              );
+            } else {
+              return const SizedBox.shrink();
+            }
+          },
+          childCount: _stores.length + (_isLoading || !_hasMoreData ? 1 : 0),
         ),
       ),
     );
-  }
-
-  StoreModel _getSkeletonStore() {
-    return StoreModel(
-      id: "****",
-      name: "**************",
-      description: "*******************************",
-      icon: "",
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<List<StoreModel>>(
-      key: _futureKey,
-      future: _fetchStores,
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          AppLogger.d(snapshot.error.toString());
-          return _buildErrorWidget();
-        }
-
-        final isLoading = snapshot.connectionState == ConnectionState.waiting;
-        final stores = snapshot.data ?? [];
-
-        return _buildStoresList(stores, isLoading);
-      },
-    );
-  }
-}
-
-// ====================== Store Item Tile ======================
-class StoreItemTile extends StatelessWidget {
-  final StoreModel store;
-
-  const StoreItemTile({super.key, required this.store});
-
-  void _navigateToCouponCard(BuildContext context) {
-    Navigator.of(
-      context,
-    ).push(MaterialPageRoute(builder: (_) => CouponCard(store: store)));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Bounceable(
-      onTap: () => _navigateToCouponCard(context),
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        padding: const EdgeInsets.all(15),
-        decoration: _buildContainerDecoration(theme),
-        child: Row(
-          children: [
-            // Store Image
-            SizedBox(
-              width: 70,
-              height: 70,
-              child: ClipOval(child: StoreImage(store: store)),
-            ),
-            const SizedBox(width: 16),
-            // Store Info
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    store.name,
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    store.description,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 12,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  BoxDecoration _buildContainerDecoration(ThemeData theme) {
-    return BoxDecoration(
-      color: theme.colorScheme.surface,
-      border: Border.all(color: theme.colorScheme.secondary),
-      borderRadius: BorderRadius.circular(16),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black.withValues(alpha: 0.1),
-          spreadRadius: 0.5,
-          blurRadius: 10,
-          offset: const Offset(0, 2),
-        ),
-      ],
-    );
-  }
-}
-
-// ====================== Store Image Widget ======================
-class StoreImage extends StatelessWidget {
-  final StoreModel store;
-
-  const StoreImage({super.key, required this.store});
-
-  static final Widget _fallbackIcon = Container();
-
-  @override
-  Widget build(BuildContext context) {
-    final isNetworkImage = store.icon.startsWith('http');
-    return isNetworkImage
-        ? Image.network(
-            store.icon,
-            fit: BoxFit.cover,
-            cacheWidth: 100,
-            cacheHeight: 100,
-            loadingBuilder: (context, child, progress) {
-              if (progress == null) return child;
-              return Center(child: CircularProgressIndicator());
-            },
-            errorBuilder: (context, error, stackTrace) {
-              return Icon(Icons.store, size: 50);
-            },
-          )
-        : Image.asset(
-            "assets/icons/store.png",
-            fit: BoxFit.cover,
-            cacheWidth: 100,
-            cacheHeight: 100,
-            errorBuilder: (_, __, ___) => _fallbackIcon,
-          );
   }
 }

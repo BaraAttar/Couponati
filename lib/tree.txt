@@ -5,30 +5,44 @@
 │   ├── layout
 │   │   ├── main_layout.dart
 │   │   └── main_nav_bar.dart
+│   ├── logger
+│   │   └── logger_service.dart
 │   └── theme
 │       ├── theme.dart
 │       └── theme.provider.dart
 ├── features
 │   ├── coupon_card
-│   │   └── coupon_card.dart
+│   │   ├── coupon_card_model.dart
+│   │   ├── coupon_card.dart
+│   │   └── widgets
+│   │       └── coupon_card_view.dart
 │   ├── favourites
 │   │   └── favourites_page.dart
 │   ├── home
 │   │   ├── home_page.dart
 │   │   └── widgets
-│   │       ├── banners
-│   │       │   ├── banners_slider_logic.dart
-│   │       │   └── banners_slider.dart
+│   │       ├── banner
+│   │       │   ├── banner_controller
+│   │       │   │   ├── banner_controller_model.dart
+│   │       │   │   └── banner_slider_controller.dart
+│   │       │   ├── banner_model.dart
+│   │       │   └── banner_slider_view.dart
 │   │       ├── categories
-│   │       │   └── categories_slider.dart
+│   │       │   ├── categories_controller.dart
+│   │       │   ├── categories_slider.dart
+│   │       │   └── category_model.dart
 │   │       ├── search_bar
 │   │       │   └── search_bar.dart
 │   │       └── stores
-│   │           ├── store_list_logic.dart
-│   │           └── stores_list.dart
+│   │           ├── store_controller_model.dart
+│   │           ├── store_controller.dart
+│   │           ├── store_model.dart
+│   │           ├── stores_list_view.dart
+│   │           └── widgets
+│   │               └── store_card.dart
 │   └── settings
 │       └── settings_page.dart
 ├── main.dart
 └── tree.txt
 
-15 directories, 17 files
+19 directories, 27 files

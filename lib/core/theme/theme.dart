@@ -1,3 +1,4 @@
+// lib/core/theme/theme.dart
 import 'package:flutter/material.dart';
 
 final ColorScheme lightColorScheme = ColorScheme.light(

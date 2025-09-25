@@ -1,3 +1,5 @@
+// lib/features/coupon_card/coupon_card_model.dart
+
 // export interface Coupon extends Document {
 //     _id: Types.ObjectId;
 //     code: string;

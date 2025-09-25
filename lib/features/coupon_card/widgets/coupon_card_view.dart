@@ -1,3 +1,4 @@
+// lib/features/coupon_card/widgets/coupon_card_view.dart
 import 'package:flutter/material.dart';
 
 class CouponCardView extends StatefulWidget {

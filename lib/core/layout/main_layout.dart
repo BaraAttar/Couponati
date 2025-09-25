@@ -1,3 +1,4 @@
+// lib/core/layout/main_layout.dart
 import 'package:flutter/material.dart';
 import 'package:my_app/features/favourites/favourites_page.dart';
 import 'package:my_app/features/settings/settings_page.dart';
@@ -14,11 +15,7 @@ class Mainlayout extends StatefulWidget {
 class _MainlayoutState extends State<Mainlayout> {
   int _currentIndex = 0;
 
-  final List<Widget> _pages = [
-    HomePage(),
-    const Favourites(),
-    const Settings(),
-  ];
+  static const List<Widget> _pages = [HomePage(), Favourites(), Settings()];
 
   void _onTabSelected(int index) {
     setState(() {
@@ -31,7 +28,7 @@ class _MainlayoutState extends State<Mainlayout> {
     return Scaffold(
       body: Stack(
         children: [
-          _pages[_currentIndex],
+          IndexedStack(index: _currentIndex, children: _pages),
           Positioned(
             bottom: 0,
             left: 0,
@@ -43,11 +40,6 @@ class _MainlayoutState extends State<Mainlayout> {
           ),
         ],
       ),
-      // body: _pages[_currentIndex],
-      // bottomNavigationBar: MainNavBar(
-      //   currentIndex: _currentIndex,
-      //   onTap: _onTabSelected,
-      // ),
     );
   }
 }
