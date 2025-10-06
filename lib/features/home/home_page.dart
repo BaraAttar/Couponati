@@ -1,10 +1,10 @@
 // lib/features/home/home_page.dart
 import 'package:flutter/material.dart';
-import 'package:my_app/features/home/widgets/banner/banner_slider_view.dart';
-import 'package:my_app/features/home/widgets/categories/categories_controller.dart';
-import 'package:my_app/features/home/widgets/categories/categories_view.dart';
-import 'package:my_app/features/home/widgets/header/header.dart';
-import 'package:my_app/features/home/widgets/stores/stores_list_view.dart';
+import 'package:my_app/features/home/widgets/banner_slider_view.dart';
+import 'package:my_app/features/home/controllers/categories_controller.dart';
+import 'package:my_app/features/home/widgets/categories_view.dart';
+import 'package:my_app/features/home/widgets/header.dart';
+import 'package:my_app/features/home/widgets/stores_list_view.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -38,6 +38,7 @@ class _HomePageState extends State<HomePage>
       child: Consumer<CategoriesController>(
         builder: (context, categoriesController, _) {
           return Scaffold(
+            backgroundColor: Theme.of(context).colorScheme.surfaceDim,
             body: Stack(
               children: [
                 RefreshIndicator(

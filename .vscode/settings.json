@@ -6,5 +6,8 @@
     "editor.formatOnPaste": false
   },
   "editor.defaultFormatter": "Dart-Code.flutter",
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "[xml]": {
+    "editor.defaultFormatter": "redhat.vscode-xml"
+  }
 }

@@ -3,15 +3,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:my_app/core/layout/main_layout.dart';
 import 'package:my_app/core/theme/theme.dart';
-import 'package:my_app/core/theme/theme.provider.dart';
+import 'package:my_app/core/theme/theme_provider.dart';
+import 'package:my_app/features/auth/auth_controller.dart';
 import 'package:provider/provider.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => ThemeProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(
+          create: (_) => AuthController()..checkIfLoggedIn(),
+        ),
+      ],
       child: MyApp(),
     ),
+    // ChangeNotifierProvider(
+    //   create: (_) => ThemeProvider(),
+    //   child: MyApp(),
+    // ),
   );
 }
 
@@ -34,11 +44,8 @@ class MyApp extends StatelessWidget {
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
-          supportedLocales: const [
-            Locale('ar'),
-            Locale('en'),
-          ],
-          locale: const Locale('ar'), 
+          supportedLocales: const [Locale('ar'), Locale('en')],
+          locale: const Locale('ar'),
         );
       },
     );

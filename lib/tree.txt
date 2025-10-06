@@ -2,47 +2,61 @@
 ├── app
 │   └── config.dart
 ├── core
+│   ├── constants
+│   │   └── app_styles.dart
 │   ├── layout
 │   │   ├── main_layout.dart
 │   │   └── main_nav_bar.dart
 │   ├── logger
 │   │   └── logger_service.dart
+│   ├── storage
+│   │   └── token_storage.dart
 │   └── theme
-│       ├── theme.dart
-│       └── theme.provider.dart
+│       ├── theme_provider.dart
+│       └── theme.dart
 ├── features
-│   ├── coupon_card
-│   │   ├── coupon_card_model.dart
-│   │   ├── coupon_card.dart
+│   ├── auth
+│   │   ├── auth_controller.dart
+│   │   ├── auth_model.dart
+│   │   └── widgets
+│   │       └── google_signin_button.dart
+│   ├── coupon
+│   │   ├── coupon_model.dart
+│   │   ├── coupon_screen.dart
 │   │   └── widgets
 │   │       └── coupon_card_view.dart
 │   ├── favourites
 │   │   └── favourites_page.dart
 │   ├── home
+│   │   ├── controllers
+│   │   │   ├── banner_slider_controller.dart
+│   │   │   ├── categories_controller.dart
+│   │   │   ├── search_controller.dart
+│   │   │   └── store_controller.dart
 │   │   ├── home_page.dart
+│   │   ├── models
+│   │   │   ├── banner_model.dart
+│   │   │   ├── category_model.dart
+│   │   │   └── store_model.dart
 │   │   └── widgets
-│   │       ├── banner
-│   │       │   ├── banner_controller
-│   │       │   │   ├── banner_controller_model.dart
-│   │       │   │   └── banner_slider_controller.dart
-│   │       │   ├── banner_model.dart
-│   │       │   └── banner_slider_view.dart
-│   │       ├── categories
-│   │       │   ├── categories_controller.dart
-│   │       │   ├── categories_slider.dart
-│   │       │   └── category_model.dart
-│   │       ├── search_bar
-│   │       │   └── search_bar.dart
-│   │       └── stores
-│   │           ├── store_controller_model.dart
-│   │           ├── store_controller.dart
-│   │           ├── store_model.dart
-│   │           ├── stores_list_view.dart
-│   │           └── widgets
-│   │               └── store_card.dart
+│   │       ├── banner_slider_view.dart
+│   │       ├── categories_view.dart
+│   │       ├── header.dart
+│   │       ├── search_bar.dart
+│   │       ├── store_card.dart
+│   │       └── stores_list_view.dart
 │   └── settings
-│       └── settings_page.dart
+│       ├── settings_page.dart
+│       └── widgets
+│           ├── account_card
+│           │   ├── account_card.dart
+│           │   ├── account_server_error_view.dart
+│           │   └── widgets
+│           │       ├── account_actions.dart
+│           │       ├── guest_welcome_message.dart
+│           │       └── logged_in_user_info.dart
+│           └── settings_card.dart
 ├── main.dart
 └── tree.txt
 
-19 directories, 27 files
+22 directories, 38 files

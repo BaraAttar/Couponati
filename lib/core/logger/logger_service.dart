@@ -23,7 +23,7 @@ class AppLogger {
               lineLength: 120,
               colors: true,
               printEmojis: false,
-              printTime: true,
+              // printTime: true,
             )
           : SimplePrinter(colors: false), // للإنتاج
       filter: kDebugMode ? DevelopmentFilter() : ProductionFilter(),
