@@ -1,5 +1,6 @@
 // lib/main.dart
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:my_app/core/layout/main_layout.dart';
 import 'package:my_app/core/locale/locale_provider.dart';
@@ -9,8 +10,11 @@ import 'package:my_app/features/auth/auth_controller.dart';
 import 'package:my_app/features/favourites/favourites_controller.dart';
 import 'package:provider/provider.dart';
 
-// TODO: add Localization
-void main() {
+// TODO: add Localization files [ar-en]
+void main() async {
+  // Enables edge-to-edge mode so the app extends under system bars
+  WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   final favouritesController = FavouritesController();
 
   runApp(

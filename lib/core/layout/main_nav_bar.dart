@@ -1,6 +1,9 @@
 // lib/core/layout/main_nav_bar.dart
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:my_app/core/theme/theme_provider.dart';
+import 'package:provider/provider.dart';
 
 class MainNavBar extends StatelessWidget {
   final int currentIndex;
@@ -14,34 +17,56 @@ class MainNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeMode = Provider.of<ThemeProvider>(context).themeMode;
+
     final theme = Theme.of(context);
+    final navBarColor = theme.colorScheme.surface.withValues(
+      alpha: 0.7,
+    ); // للـ Container
+    final systemNavBarColor = theme.colorScheme.surface.withValues(
+      alpha: 0.01,
+    ); // لشريط النظام بدون شفافية
+
+    // توحيد ألوان شريط النظام مع الخلفية
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        systemNavigationBarColor: systemNavBarColor,
+        // systemNavigationBarIconBrightness: Brightness.light ,
+        systemNavigationBarIconBrightness:
+        themeMode == ThemeMode.light ? Brightness.dark : Brightness.light,
+        statusBarColor: Colors.transparent,
+        // statusBarIconBrightness: Brightness.dark 
+        statusBarIconBrightness:
+        themeMode == ThemeMode.light ? Brightness.dark : Brightness.light,
+        
+      ),
+    );
+
     return ClipRect(
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 20.0, sigmaY: 20.0),
+        filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
         child: Container(
-          decoration: BoxDecoration(
-            color: theme.colorScheme.surface.withValues(alpha: 0.7), // خلفية بيضاء شبه شفافة
-          ),
-          child: _buildNavBarWidget(context),
+          color: navBarColor, // شبه شفاف مع Blur
+          child: _buildBottomNavigationBar(context, theme),
         ),
       ),
     );
   }
 
-  Widget _buildNavBarWidget(BuildContext context) {
-    final theme = Theme.of(context);
+  Widget _buildBottomNavigationBar(BuildContext context, ThemeData theme) {
     return Theme(
       data: theme.copyWith(
         splashFactory: NoSplash.splashFactory, // إزالة تأثير الماء
-        highlightColor: Colors.transparent,    // إزالة اللون عند الضغط
+        highlightColor: Colors.transparent, // إزالة اللون عند الضغط
       ),
       child: BottomNavigationBar(
         currentIndex: currentIndex,
         onTap: onTap,
         selectedItemColor: theme.colorScheme.primary,
         unselectedItemColor: Colors.grey,
-        backgroundColor: Colors.transparent, // خليناه شفاف لأنه عندنا Container فوق
-        elevation: 0, // إزالة الظل الافتراضي
+        backgroundColor: Colors.transparent, // الشفافية من الـ Container
+        elevation: 0,
+        type: BottomNavigationBarType.fixed,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
@@ -50,7 +75,8 @@ class MainNavBar extends StatelessWidget {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
-            label: 'Settings'),
+            label: 'Settings',
+          ),
         ],
       ),
     );
