@@ -2,26 +2,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:my_app/core/layout/main_layout.dart';
+import 'package:my_app/core/locale/locale_provider.dart';
 import 'package:my_app/core/theme/theme.dart';
 import 'package:my_app/core/theme/theme_provider.dart';
 import 'package:my_app/features/auth/auth_controller.dart';
+import 'package:my_app/features/favourites/favourites_controller.dart';
 import 'package:provider/provider.dart';
 
+// TODO: add Localization
 void main() {
+  final favouritesController = FavouritesController();
+
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => LocaleProvider()),
+        ChangeNotifierProvider(create: (_) => favouritesController),
         ChangeNotifierProvider(
-          create: (_) => AuthController()..checkIfLoggedIn(),
+          create: (_) =>
+              AuthController(favouritesController)..checkIfLoggedIn(),
         ),
       ],
       child: MyApp(),
     ),
-    // ChangeNotifierProvider(
-    //   create: (_) => ThemeProvider(),
-    //   child: MyApp(),
-    // ),
   );
 }
 
@@ -30,22 +34,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ThemeProvider>(
-      builder: (context, themeProvider, child) {
+    return Consumer2<ThemeProvider, LocaleProvider>(
+      builder: (context, themeProvider, localeProvider, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           home: Mainlayout(),
           theme: lightMode,
           darkTheme: darkMode,
-          themeMode: themeProvider.isDark ? ThemeMode.dark : ThemeMode.light,
-
+          themeMode: themeProvider.themeMode,
+          locale: localeProvider.locale,
           localizationsDelegates: const [
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
           supportedLocales: const [Locale('ar'), Locale('en')],
-          locale: const Locale('ar'),
         );
       },
     );

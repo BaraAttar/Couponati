@@ -183,7 +183,7 @@ class CouponsListView extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 4),
-            Container(
+            SizedBox(
               width: double.infinity,
               // color: Colors.amber,
               child: Text(

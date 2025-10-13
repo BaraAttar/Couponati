@@ -17,7 +17,7 @@ class StoreModel {
   }) : coupon = coupon ?? [];
 
   factory StoreModel.fromJson(Map<String, dynamic> json) {
-    final couponsJson = json['coupons'] as List<dynamic>? ?? [];
+    final couponsJson = (json['coupons'] ?? json['coupon']) as List<dynamic>? ?? [];
     final coupons = couponsJson.map((c) => CouponModel.fromJson(c)).toList();
 
     return StoreModel(

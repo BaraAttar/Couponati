@@ -1,27 +1,38 @@
 // lib/core/theme/theme.provider.dart
 import 'package:flutter/material.dart';
-import 'package:my_app/core/theme/theme.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeProvider extends ChangeNotifier {
-  bool _isDark;
+  ThemeMode _themeMode = ThemeMode.light;
 
-  bool get isDark => _isDark;
+  ThemeMode get themeMode => _themeMode;
 
-    ColorScheme get colorScheme => _isDark ? darkColorScheme : lightColorScheme;
-
-
-  ThemeProvider() : _isDark = WidgetsBinding.instance.platformDispatcher.platformBrightness == Brightness.dark {
-    // الاستماع لتغير ثيم الجهاز
-    WidgetsBinding.instance.platformDispatcher.onPlatformBrightnessChanged = () {
-      final brightness = WidgetsBinding.instance.platformDispatcher.platformBrightness;
-      _isDark = brightness == Brightness.dark;
-      notifyListeners();
-    };
+  ThemeProvider() {
+    _loadTheme();
   }
 
-  // تبديل يدوي للثيم داخل التطبيق
-  void toggleTheme() {
-    _isDark = !_isDark;
+  Future<void> _loadTheme() async {
+    final prefs = await SharedPreferences.getInstance();
+    final mode = prefs.getString('ThemeMode') ?? 'light';
+    if (mode == 'light') {
+      _themeMode = ThemeMode.light;
+    } else if (mode == 'dark') {
+      _themeMode = ThemeMode.dark;
+    } else {
+      _themeMode = ThemeMode.system;
+    }
     notifyListeners();
+  }
+
+  Future<void> setTheme(ThemeMode mode) async {
+    _themeMode = mode;
+    notifyListeners();
+    final prefs = await SharedPreferences.getInstance();
+    String modeStr = mode == ThemeMode.light
+        ? 'light'
+        : mode == ThemeMode.dark
+        ? 'dark'
+        : 'system';
+    await prefs.setString('ThemeMode', modeStr);
   }
 }

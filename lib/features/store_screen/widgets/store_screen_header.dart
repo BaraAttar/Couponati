@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
+// import 'package:my_app/features/auth/auth_controller.dart';
+import 'package:my_app/features/favourites/favourites_controller.dart';
 import 'package:my_app/features/home/models/store_model.dart';
 import 'package:my_app/features/home/widgets/store_card.dart';
+import 'package:provider/provider.dart';
 
 class StoreScreenHeader extends StatelessWidget {
   final StoreModel store;
@@ -51,6 +54,9 @@ class StoreScreenHeader extends StatelessWidget {
   }
 
   Widget _topBarActions(BuildContext context, double coverHeight) {
+    final isFav = context.select<FavouritesController, bool>(
+      (favourites) => favourites.isFavourite(store.id),
+    );
     return Positioned(
       top: MediaQuery.of(context).padding.top,
       right: 20,
@@ -76,7 +82,10 @@ class StoreScreenHeader extends StatelessWidget {
               // Favorite Button
               _buildActionButton(
                 context,
-                icon: Icons.favorite_border_rounded,
+                icon: isFav ? Icons.favorite : Icons.favorite_border_rounded,
+                color: isFav
+                    ? Colors.red
+                    : Colors.black,
                 onTap: () => _handleFavorite(context),
               ),
             ],
@@ -90,6 +99,7 @@ class StoreScreenHeader extends StatelessWidget {
     BuildContext context, {
     required IconData icon,
     required VoidCallback onTap,
+    Color? color,
   }) {
     final theme = Theme.of(context);
 
@@ -114,7 +124,7 @@ class StoreScreenHeader extends StatelessWidget {
             ),
           ],
         ),
-        child: Icon(icon, size: 22, color: theme.colorScheme.primary),
+        child: Icon(icon, size: 22, color: color ?? Colors.black),
       ),
     );
   }
@@ -128,6 +138,7 @@ class StoreScreenHeader extends StatelessWidget {
   }
 
   void _handleFavorite(BuildContext context) {
-    // TODO: Implement favorite functionality
+    final favourites = context.read<FavouritesController>();
+    favourites.toggleFavourite(store);
   }
 }

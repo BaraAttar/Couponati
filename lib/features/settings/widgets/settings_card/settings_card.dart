@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/core/constants/app_styles.dart';
+import 'package:my_app/features/settings/widgets/settings_card/language_bottom_sheet.dart';
+import 'package:my_app/features/settings/widgets/settings_card/theme_bottom_sheet.dart';
 
 class SettingsCard extends StatelessWidget {
   const SettingsCard({super.key});
@@ -45,7 +47,7 @@ class SettingsCard extends StatelessWidget {
             title: 'اللغة',
             subtitle: 'العربية',
             color: Colors.blue,
-            onTap: () {},
+            onTap: () => LanguageBottomSheet.show(context),
           ),
 
           _settingItem(
@@ -54,7 +56,7 @@ class SettingsCard extends StatelessWidget {
             title: 'المظهر',
             subtitle: 'فاتح / داكن',
             color: Colors.indigo,
-            onTap: () {},
+            onTap: () => ThemeBottomSheet.show(context),
           ),
 
           _settingItem(

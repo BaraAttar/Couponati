@@ -6,7 +6,7 @@ class UserProfileModel {
   final String? firstName;
   final String? lastName;
   final String? picture;
-  final List<StoreModel>? favourites;
+  // final List<StoreModel>? favourites;
 
   UserProfileModel({
     required this.googleId,
@@ -14,7 +14,7 @@ class UserProfileModel {
     required this.firstName,
     required this.lastName,
     required this.picture,
-    required this.favourites,
+    // required this.favourites,
   });
 
   factory UserProfileModel.fromJson(Map<String, dynamic> json) {
@@ -24,11 +24,11 @@ class UserProfileModel {
       firstName: json['firstName'] ?? '',
       lastName: json['lastName'] ?? '',
       picture: json['picture'] ?? '',
-      favourites:
-          (json['favourites'] as List<dynamic>?)
-              ?.map((storeJson) => StoreModel.fromJson(storeJson))
-              .toList() ??
-          [],
+      // favourites:
+      //     (json['favourites'] as List<dynamic>?)
+      //         ?.map((storeJson) => StoreModel.fromJson(storeJson))
+      //         .toList() ??
+      //     [],
     );
   }
 
@@ -46,8 +46,9 @@ class UserProfileModel {
 class DataModel {
   final UserProfileModel? user;
   final String? token;
+  final List<StoreModel>? favourites;
 
-  DataModel({required this.user, required this.token});
+  DataModel({required this.token, this.user, this.favourites});
 
   factory DataModel.fromJson(Map<String, dynamic> json) {
     return DataModel(
@@ -55,11 +56,17 @@ class DataModel {
           ? UserProfileModel.fromJson(json['user'])
           : null,
       token: json['token'],
+      favourites:
+          (json['favourites'] as List<dynamic>?)
+              ?.map(
+                (storeJson) => StoreModel.fromJson(storeJson),
+              )
+              .toList(),
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {"user": user, "token": token};
+    return {"user": user, "token": token, "favourites": favourites};
   }
 }
 

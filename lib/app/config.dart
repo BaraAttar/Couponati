@@ -9,4 +9,5 @@ class AppConfig {
   static const String getBanners = "$baseUrl/banner";
   static const String getStores = "$baseUrl/store";
   static const String getCategories = "$baseUrl/category";
+  static const String userFavourites = "$baseUrl/user/store/favourites";
 }

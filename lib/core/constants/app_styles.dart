@@ -31,11 +31,6 @@ class AppStyles {
         ),
       ],
     );
-    // return BoxDecoration(
-    //   color: Theme.of(context).colorScheme.surface,
-    //   borderRadius: AppStyles.defaultRadius,
-    //   boxShadow: AppStyles.cardShadow(context),
-    // );
   }
 
   // static BoxDecoration storeCardBoxDeconration(BuildContext context) {
@@ -58,6 +53,5 @@ class AppStyles {
   //   );
   // }
 
-  // يمكنك إضافة أشياء أخرى
   static BorderRadius defaultRadius = BorderRadius.circular(12);
 }

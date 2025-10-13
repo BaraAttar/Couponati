@@ -3,7 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:my_app/features/settings/widgets/account_card/account_card.dart';
-import 'package:my_app/features/settings/widgets/settings_card.dart';
+import 'package:my_app/features/settings/widgets/settings_card/settings_card.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});

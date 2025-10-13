@@ -1,28 +1,60 @@
 import 'package:flutter/material.dart';
+// import 'package:my_app/core/logger/logger_service.dart';
+// import 'package:my_app/core/storage/token_storage.dart';
 import 'package:my_app/features/auth/auth_controller.dart';
 import 'package:my_app/features/auth/widgets/google_signin_button.dart';
+import 'package:my_app/features/favourites/favourites_controller.dart';
+import 'package:my_app/features/home/models/store_model.dart';
+import 'package:my_app/features/home/widgets/store_card.dart';
 import 'package:provider/provider.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class Favourites extends StatelessWidget {
   const Favourites({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // void onPressed() async {
+    //   final token = await TokenStorage.getToken();
+    //   AppLogger.d(token.toString());
+    // }
+
     return Scaffold(
+      appBar: AppBar(title: const Text('المفضلة'), centerTitle: true),
       body: SafeArea(
         child: Consumer<AuthController>(
           builder: (context, auth, child) {
+            // return ElevatedButton(onPressed: onPressed, child: Text("token"));
             if (auth.isLoading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+              return const Center(child: CircularProgressIndicator());
             }
-            
-            if (auth.isLoggedIn == false) {
+
+            if (!auth.isLoggedIn) {
               return _buildGuestView(context);
             }
-            
-            return _buildFavouritesView(auth);
+
+            final favController = context.read<FavouritesController>();
+
+            // تحميل المفضلة عند تسجيل الدخول إذا كانت فارغة
+            if (favController.favourites.isEmpty && !favController.isLoading) {
+              favController.fetchFavourites();
+            }
+
+            return Consumer<FavouritesController>(
+              builder: (context, favourites, child) {
+                if (favourites.isLoading) {
+                  return _loadingSkeletonContent();
+                }
+
+                if (favourites.favourites.isEmpty) {
+                  return const Center(
+                    child: Text('لا توجد متاجر مفضلة بعد'),
+                  );
+                }
+
+                return _favouritesListContent(context, favourites.favourites);
+              },
+            );
           },
         ),
       ),
@@ -31,7 +63,7 @@ class Favourites extends StatelessWidget {
 
   Widget _buildGuestView(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(24.0),
@@ -47,7 +79,7 @@ class Favourites extends StatelessWidget {
                 return Icon(
                   Icons.favorite_border_rounded,
                   size: 120,
-                  color: theme.colorScheme.primary.withValues(alpha:0.3),
+                  color: theme.colorScheme.primary.withValues(alpha: 0.3),
                 );
               },
             ),
@@ -67,26 +99,42 @@ class Favourites extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 32),
-            GoogleSigninButton()
+            GoogleSigninButton(),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildFavouritesView(AuthController auth) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            'مرحباً ${auth.user?.firstName ?? ''}',
-            style: const TextStyle(fontSize: 18),
+  Widget _loadingSkeletonContent() {
+    return ListView.builder(
+      itemCount: 3,
+      itemBuilder: (context, index) {
+        return Skeletonizer(
+          child: StoreCard(
+            store: StoreModel(
+              id: "id",
+              name: "name",
+              icon: "icon",
+              description: "description",
+            ),
           ),
-          const SizedBox(height: 16),
-          const Text('قائمة المفضلة ستظهر هنا'),
-        ],
-      ),
+        );
+      },
+    );
+  }
+
+  Widget _favouritesListContent(
+    BuildContext context,
+    List<StoreModel> favouritesList,
+  ) {
+    return ListView.builder(
+      itemCount: favouritesList.length,
+      itemBuilder: (context, index) {
+        // AppLogger.d(favouritesList[index].coupon.length.toString());
+        final store = favouritesList[index];
+        return StoreCard(store: store);
+      },
     );
   }
 }
