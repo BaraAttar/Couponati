@@ -59,8 +59,16 @@ class AuthController extends ChangeNotifier {
       _setLoading(true);
       _clearErrors();
 
+      // Initialize GoogleSignIn with serverClientId
+      await _googleSignIn.initialize(
+        ***REMOVED***
+        ***REMOVED***
+      );
+
       final account = await _googleSignIn.authenticate(
         scopeHint: ['email', 'profile'],
+        
+        
       );
 
       await _sendToServer(account);

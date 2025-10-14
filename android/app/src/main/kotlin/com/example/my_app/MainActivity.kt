@@ -1,4 +1,4 @@
-package com.example.my_app
+package com.baraa_attar.couponati
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -61,6 +61,8 @@
 				</array>
 			</dict>
 		</array>
+		<key>GoogleServerClientID</key>
+		<string>926247845467-4aau5dvmcfjpfb1t1o5kvqtkksjnke19.apps.googleusercontent.com</string>
 		<key>LSApplicationQueriesSchemes</key>
 		<array>
 			<string>com.googleusercontent.apps.926247845467-kce29intsfj8e8npikhcg8oqe67khhih</string>

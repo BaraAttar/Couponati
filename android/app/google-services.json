@@ -1,0 +1,47 @@
+{
+    "project_info": {
+        "project_number": "926247845467",
+        "project_id": "vmkali-437304",
+        "storage_bucket": "vmkali-437304.appspot.com"
+    },
+    "client": [
+        {
+            "client_info": {
+                "mobilesdk_app_id": "1:926247845467:android:com.baraa_attar.couponati",
+                "android_client_info": {
+                    "package_name": "com.baraa_attar.couponati"
+                }
+            },
+            "oauth_client": [
+                {
+                    "client_id": "926247845467-4aau5dvmcfjpfb1t1o5kvqtkksjnke19.apps.googleusercontent.com",
+                    "client_type": 1,
+                    "android_info": {
+                        "package_name": "com.baraa_attar.couponati",
+                        "certificate_hash": "sha1"
+                    }
+                },
+                {
+                    "client_id": "926247845467-4aau5dvmcfjpfb1t1o5kvqtkksjnke19.apps.googleusercontent.com",
+                    "client_type": 3
+                }
+            ],
+            "api_key": [
+                {
+                    "current_key": "AIzaSyDummyKeyForDevelopment"
+                }
+            ],
+            "services": {
+                "appinvite_service": {
+                    "other_platform_oauth_client": [
+                        {
+                            "client_id": "926247845467-4aau5dvmcfjpfb1t1o5kvqtkksjnke19.apps.googleusercontent.com",
+                            "client_type": 3
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "configuration_version": "1"
+}
