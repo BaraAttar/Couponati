@@ -23,8 +23,10 @@ class _HeaderState extends State<Header> {
             color: theme.colorScheme.surface.withValues(alpha: 0.7),
           ),
           width: MediaQuery.of(context).size.width * 1,
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 20 , vertical: 10),
           child: SafeArea(
+            top: true,
+            bottom: false,
             child: SizedBox(
               child: Theme(
                 data: Theme.of(context).copyWith(
@@ -35,7 +37,6 @@ class _HeaderState extends State<Header> {
                     ),
                   ),
                 ),
-                // child: SearchBarWidget(),
                 child: SearchBarWidget(),
               ),
             ),

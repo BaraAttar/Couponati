@@ -33,12 +33,12 @@ class StoreCard extends StatelessWidget {
   Widget _storeCard(BuildContext context, store) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
       decoration: AppStyles.defaultBoxDecoration(context),
       child: Row(
         children: [
           _storeImage(context, store.icon),
-          const SizedBox(width: 16),
+          const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,14 +47,14 @@ class StoreCard extends StatelessWidget {
                 Text(
                   store.name,
                   style: const TextStyle(
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   store.description,
-                  style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                  style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                 ),
               ],
             ),
@@ -66,7 +66,7 @@ class StoreCard extends StatelessWidget {
 
   Widget _storeImage(BuildContext context, String icon) {
     return ClipOval(
-      child: SizedBox(width: 65, height: 65, child: _imageWithFallback(icon)),
+      child: SizedBox(width: 55, height: 55, child: _imageWithFallback(icon)),
     );
   }
 
@@ -75,8 +75,8 @@ class StoreCard extends StatelessWidget {
       return Image.asset(
         "assets/icons/store.png",
         fit: BoxFit.cover,
-        width: 65,
-        height: 65,
+        width: 50,
+        height: 50,
       );
     }
 

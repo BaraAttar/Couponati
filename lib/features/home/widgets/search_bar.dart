@@ -42,7 +42,7 @@ class _SearchBarState extends State<SearchBarWidget> {
     _debounce?.cancel();
     _textController.dispose();
     _focusNode.dispose();
-    _controller.dispose(); 
+    _controller.dispose();
     super.dispose();
   }
 
@@ -74,38 +74,57 @@ class _SearchBarState extends State<SearchBarWidget> {
   // SearchBar Widget
   // ============================
   Widget _buildSearchBar(ThemeData theme) {
-    return SearchBar(
-      controller: _textController,
-      focusNode: _focusNode,
-      backgroundColor: WidgetStateProperty.all(
-        theme.colorScheme.surfaceDim.withValues(alpha: 0.4),
+    return Container(
+      height: 40,
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.secondary.withValues(alpha: 0.4),
+        borderRadius: BorderRadius.circular(12),
       ),
-      hintText: 'ابحث هنا',
-      hintStyle: WidgetStateProperty.all(
-        TextStyle(color: theme.colorScheme.primary.withValues(alpha: 0.7)),
-      ),
-      textStyle: WidgetStateProperty.all(
-        TextStyle(color: theme.colorScheme.primary.withValues(alpha: 0.9)),
-      ),
-      leading: Icon(
-        Icons.search,
-        color: theme.colorScheme.primary.withValues(alpha: 0.7),
-      ),
-      trailing: _isFocused
-          ? [
-              IconButton(
-                onPressed: () {
-                  _textController.clear();
-                  _focusNode.unfocus();
-                },
-                icon: Icon(
-                  Icons.close,
-                  color: theme.colorScheme.primary.withValues(alpha: 0.7),
-                ),
+      child: Row(
+        children: [
+          Icon(
+            Icons.search,
+            size: 20,
+            color: theme.colorScheme.primary.withValues(alpha: 0.7),
+          ),
+          const SizedBox(width: 4),
+          Expanded(
+            child: TextField(
+              controller: _textController,
+              focusNode: _focusNode,
+              style: TextStyle(
+                fontSize: 14,
+                color: theme.colorScheme.primary.withValues(alpha: 0.9),
+                decoration: TextDecoration.none,
               ),
-            ]
-          : [],
-      shadowColor: WidgetStateProperty.all(Colors.transparent),
+              decoration: InputDecoration(
+                hintText: 'ابحث هنا',
+                hintStyle: TextStyle(
+                  fontSize: 14,
+                  color: theme.colorScheme.primary.withValues(alpha: 0.7),
+                  decoration: TextDecoration.none,
+                ),
+                border: InputBorder.none,
+                isDense: true, // يقلل المسافة الداخلية
+                contentPadding: const EdgeInsets.symmetric(vertical: 0),
+              ),
+            ),
+          ),
+          if (_isFocused)
+            IconButton(
+              onPressed: () {
+                _textController.clear();
+                _focusNode.unfocus();
+              },
+              icon: Icon(
+                Icons.close,
+                size: 20,
+                color: theme.colorScheme.primary.withValues(alpha: 0.7),
+              ),
+            ),
+        ],
+      ),
     );
   }
 }

@@ -7,6 +7,7 @@ import 'package:my_app/core/logger/logger_service.dart';
 import 'package:my_app/core/storage/token_storage.dart';
 import 'package:my_app/features/auth/auth_model.dart';
 import 'package:my_app/features/favourites/favourites_controller.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class AuthController extends ChangeNotifier {
   final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
@@ -61,14 +62,11 @@ class AuthController extends ChangeNotifier {
 
       // Initialize GoogleSignIn with serverClientId
       await _googleSignIn.initialize(
-        ***REMOVED***
-        ***REMOVED***
+        serverClientId: dotenv.env['GOOGLE_SERVER_CLIENT_ID'],
       );
 
       final account = await _googleSignIn.authenticate(
         scopeHint: ['email', 'profile'],
-        
-        
       );
 
       await _sendToServer(account);
@@ -170,15 +168,11 @@ class AuthController extends ChangeNotifier {
       _setIsLoggedIn(true);
     }
 
-   
-
     final favouritesList = controllerModel.data?.favourites;
     if (favouritesList != null) {
       // AppLogger.d(favouritesList.length.toString());
       _favouritesController.setFavouritesFromAuth(favouritesList);
     }
-
-    
 
     final token = controllerModel.data?.token;
     if (token != null) {

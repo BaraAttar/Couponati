@@ -9,11 +9,14 @@ import 'package:my_app/core/theme/theme_provider.dart';
 import 'package:my_app/features/auth/auth_controller.dart';
 import 'package:my_app/features/favourites/favourites_controller.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 // TODO: add Localization files [ar-en]
 void main() async {
-  // Enables edge-to-edge mode so the app extends under system bars
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
+
+  // Enables edge-to-edge mode so the app extends under system bars
   await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   final favouritesController = FavouritesController();
 

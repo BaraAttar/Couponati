@@ -161,7 +161,7 @@ class CategoriesSliderState extends State<CategoriesSlider> {
           duration: const Duration(milliseconds: 200), // انيميشن للـ padding
           curve: Curves.easeInOut,
           padding: EdgeInsets.all(
-            isSelected ? 8.0 : 11.0,
+            isSelected ? 10.0 : 14.0,
           ), // تقليل الـ padding عند التحديد
           child: _buildImageWithFallback( context,icon),
         ),

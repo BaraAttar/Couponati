@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage>
                     controller: _scrollController,
                     slivers: [
                       const SliverToBoxAdapter(
-                        child: SizedBox(height: 120), // مكان الـ Header
+                        child: SizedBox(height: 80), // مكان الـ Header
                       ),
                       SliverToBoxAdapter(
                         child: BannerSliderView(key: _bannersKey),
