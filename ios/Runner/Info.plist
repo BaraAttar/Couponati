@@ -67,5 +67,11 @@
 		<array>
 			<string>com.googleusercontent.apps.926247845467-kce29intsfj8e8npikhcg8oqe67khhih</string>
 		</array>
+		<!-- Localization -->
+		<key>CFBundleLocalizations</key>
+		<array>
+		    <string>en</string>
+		    <string>ar</string>
+		</array>
 	</dict>
 </plist>

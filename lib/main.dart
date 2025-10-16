@@ -10,6 +10,7 @@ import 'package:my_app/features/auth/auth_controller.dart';
 import 'package:my_app/features/favourites/favourites_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'generated/l10n.dart';
 
 // TODO: add Localization files [ar-en]
 void main() async {
@@ -51,11 +52,12 @@ class MyApp extends StatelessWidget {
           themeMode: themeProvider.themeMode,
           locale: localeProvider.locale,
           localizationsDelegates: const [
+            S.delegate,
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
-          supportedLocales: const [Locale('ar'), Locale('en')],
+          supportedLocales: S.delegate.supportedLocales,
         );
       },
     );

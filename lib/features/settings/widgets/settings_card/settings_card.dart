@@ -32,6 +32,7 @@ class SettingsCard extends StatelessWidget {
           ),
 
           // عناصر الإعدادات
+          // TODO
           _settingItem(
             context,
             icon: Icons.notifications_rounded,
@@ -41,6 +42,7 @@ class SettingsCard extends StatelessWidget {
             onTap: () {},
           ),
 
+          // TODO
           _settingItem(
             context,
             icon: Icons.language_rounded,
@@ -50,6 +52,7 @@ class SettingsCard extends StatelessWidget {
             onTap: () => LanguageBottomSheet.show(context),
           ),
 
+          // TODO
           _settingItem(
             context,
             icon: Icons.dark_mode_rounded,
@@ -59,6 +62,7 @@ class SettingsCard extends StatelessWidget {
             onTap: () => ThemeBottomSheet.show(context),
           ),
 
+          // TODO
           _settingItem(
             context,
             icon: Icons.privacy_tip_rounded,
@@ -68,6 +72,7 @@ class SettingsCard extends StatelessWidget {
             onTap: () {},
           ),
 
+          // TODO
           _settingItem(
             context,
             icon: Icons.help_rounded,
@@ -77,6 +82,7 @@ class SettingsCard extends StatelessWidget {
             onTap: () {},
           ),
 
+          // TODO
           _settingItem(
             context,
             icon: Icons.info_rounded,

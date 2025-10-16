@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:my_app/core/theme/theme_provider.dart';
+import 'package:my_app/generated/l10n.dart';
 import 'package:provider/provider.dart';
 
 class MainNavBar extends StatelessWidget {
@@ -67,15 +68,15 @@ class MainNavBar extends StatelessWidget {
         backgroundColor: Colors.transparent, // الشفافية من الـ Container
         elevation: 0,
         type: BottomNavigationBarType.fixed,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: S.of(context).navbar_home),
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite_border),
-            label: 'Favourites',
+            label: S.of(context).navbar_favourites,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
-            label: 'Settings',
+            label: S.of(context).navbar_settings,
           ),
         ],
       ),
