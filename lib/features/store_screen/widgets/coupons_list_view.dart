@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:my_app/features/store_screen/coupon_model.dart';
+import 'package:my_app/generated/l10n.dart';
 
 class CouponsListView extends StatelessWidget {
   final List<CouponModel> couponsList;
@@ -131,7 +132,7 @@ class CouponsListView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                isCopied ? 'تم' : 'نسخ',
+                isCopied ? S.of(context).coupon_copied : S.of(context).coupon_copy,
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.surface,
                   fontWeight: FontWeight.bold,

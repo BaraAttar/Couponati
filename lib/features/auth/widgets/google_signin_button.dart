@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:provider/provider.dart';
 import 'package:my_app/features/auth/auth_controller.dart';
+import 'package:my_app/generated/l10n.dart';
 
 class GoogleSigninButton extends StatelessWidget {
   const GoogleSigninButton({super.key});
@@ -28,9 +29,9 @@ class GoogleSigninButton extends StatelessWidget {
           children: [
             Image.asset('assets/logos/google_logo.png', height: 34, width: 34),
             const SizedBox(width: 12),
-            const Text(
-              "تسجيل الدخول بحساب Google",
-              style: TextStyle(fontSize: 16, color: Colors.black),
+            Text(
+              S.of(context).google_signin_text,
+              style: const TextStyle(fontSize: 16, color: Colors.black),
             ),
           ],
         ),

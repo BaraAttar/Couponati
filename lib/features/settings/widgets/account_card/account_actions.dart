@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/features/auth/auth_controller.dart';
+import 'package:my_app/generated/l10n.dart';
 
 class AccountActions extends StatelessWidget {
   final AuthController auth;
@@ -16,7 +17,7 @@ class AccountActions extends StatelessWidget {
         Expanded(
           child: _ActionButton(
             icon: Icons.logout_rounded,
-            label: 'تسجيل الخروج',
+            label: S.of(context).settings_logout,
             color: Colors.red,
             onTap: () {
               auth.signOut();

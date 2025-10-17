@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:my_app/features/home/models/banner_model.dart';
 import 'package:my_app/features/home/controllers/banner_slider_controller.dart';
+import 'package:my_app/generated/l10n.dart';
 import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -124,7 +125,7 @@ class BannerSliderViewState extends State<BannerSliderView> {
                 Icon(Icons.image_not_supported, size: 40, color: Colors.grey),
                 const SizedBox(height: 8),
                 Text(
-                  'لا توجد بانرات للعرض حالياً',
+                  S.of(context).banner_no_banners,
                   style: TextStyle(color: Colors.black54, fontSize: 13),
                 ),
               ],
@@ -151,7 +152,7 @@ class BannerSliderViewState extends State<BannerSliderView> {
                 Icon(Icons.error_outline, color: Colors.red, size: 40),
                 const SizedBox(height: 8),
                 Text(
-                  'فشل تحميل البانر',
+                  S.of(context).banner_error_loading,
                   style: TextStyle(
                     color: Colors.black87,
                     fontSize: 14,
@@ -160,7 +161,7 @@ class BannerSliderViewState extends State<BannerSliderView> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'اسحب للتحديث أو تحقق من الاتصال',
+                  S.of(context).banner_error_subtitle,
                   style: TextStyle(color: Colors.black54, fontSize: 12),
                 ),
               ],

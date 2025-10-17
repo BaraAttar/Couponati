@@ -3,6 +3,7 @@ import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:my_app/core/constants/app_styles.dart';
 import 'package:my_app/core/locale/locale_provider.dart';
 import 'package:my_app/core/logger/logger_service.dart';
+import 'package:my_app/generated/l10n.dart';
 import 'package:provider/provider.dart';
 
 class LanguageBottomSheet extends StatefulWidget {
@@ -40,6 +41,7 @@ class _LanguageBottomSheetState extends State<LanguageBottomSheet> {
   }
   @override
   Widget build(BuildContext context) {
+    final s = S.of(context);
     return RadioGroup<String>(
       onChanged: (String? value) {
         if (value != null) {
@@ -63,8 +65,8 @@ class _LanguageBottomSheetState extends State<LanguageBottomSheet> {
             ),
           ),
 
-          RadioListTile<String>(value: 'ar', title: const Text('العربية')),
-          RadioListTile<String>(value: 'en', title: const Text('English')),
+          RadioListTile<String>(value: 'ar', title: Text(s.settings_language_arabic)),
+          RadioListTile<String>(value: 'en', title: Text(s.settings_language_english)),
           Padding(
             padding: const EdgeInsets.all(16),
             child: _changeLanguageBtn(context),
@@ -76,6 +78,7 @@ class _LanguageBottomSheetState extends State<LanguageBottomSheet> {
   }
 
   Widget _changeLanguageBtn(BuildContext context) {
+    final s = S.of(context);
     return Bounceable(
       onTap: () => changeLanguageBtn(context),
       child: Container(
@@ -87,7 +90,7 @@ class _LanguageBottomSheetState extends State<LanguageBottomSheet> {
         ),
         child: Center(
           child: Text(
-            "Change Language",
+            s.settings_language_change_button,
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 18,

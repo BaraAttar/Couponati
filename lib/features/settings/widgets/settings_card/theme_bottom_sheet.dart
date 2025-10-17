@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:my_app/core/constants/app_styles.dart';
 import 'package:my_app/core/theme/theme_provider.dart';
+import 'package:my_app/generated/l10n.dart';
 import 'package:provider/provider.dart';
 
 class ThemeBottomSheet extends StatefulWidget {
@@ -44,6 +45,7 @@ class _ThemeBottomSheetState extends State<ThemeBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final s = S.of(context);
     return RadioGroup<String>(
       onChanged: (String? value) {
         if (value != null) {
@@ -67,8 +69,8 @@ class _ThemeBottomSheetState extends State<ThemeBottomSheet> {
             ),
           ),
 
-          RadioListTile<String>(value: 'light', title: const Text('light')),
-          RadioListTile<String>(value: 'dark', title: const Text('dark')),
+          RadioListTile<String>(value: 'light', title: Text(s.settings_theme_light)),
+          RadioListTile<String>(value: 'dark', title: Text(s.settings_theme_dark)),
           Padding(
             padding: const EdgeInsets.all(16),
             child: _changeTemeBtn(context),
@@ -80,6 +82,7 @@ class _ThemeBottomSheetState extends State<ThemeBottomSheet> {
   }
 
   Widget _changeTemeBtn(BuildContext context) {
+    final s = S.of(context);
     return Bounceable(
       onTap: () => changeThemeBtn(context),
       child: Container(
@@ -91,7 +94,7 @@ class _ThemeBottomSheetState extends State<ThemeBottomSheet> {
         ),
         child: Center(
           child: Text(
-            "Change Theme",
+            s.settings_theme_change_button,
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 18,

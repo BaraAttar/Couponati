@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_app/generated/l10n.dart';
 
 class GuestWelcomeMessage extends StatelessWidget {
   const GuestWelcomeMessage({super.key});
@@ -22,7 +23,7 @@ class GuestWelcomeMessage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'مرحباً بك',
+                S.of(context).guest_welcome_title,
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
@@ -32,7 +33,7 @@ class GuestWelcomeMessage extends StatelessWidget {
               ),
               const SizedBox(height: 6),
               Text(
-                'سجل الدخول للوصول إلى حسابك',
+                S.of(context).guest_welcome_subtitle,
                 style: TextStyle(
                   fontSize: 13,
                   color: Colors.grey[600],

@@ -6,6 +6,7 @@ import 'package:my_app/features/auth/widgets/google_signin_button.dart';
 import 'package:my_app/features/favourites/favourites_controller.dart';
 import 'package:my_app/features/home/models/store_model.dart';
 import 'package:my_app/features/home/widgets/store_card.dart';
+import 'package:my_app/generated/l10n.dart';
 import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -20,7 +21,7 @@ class Favourites extends StatelessWidget {
     // }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('المفضلة'), centerTitle: true),
+      appBar: AppBar(title: Text(S.of(context).favourites_title), centerTitle: true),
       body: SafeArea(
         child: Consumer<AuthController>(
           builder: (context, auth, child) {
@@ -47,8 +48,8 @@ class Favourites extends StatelessWidget {
                 }
 
                 if (favourites.favourites.isEmpty) {
-                  return const Center(
-                    child: Text('لا توجد متاجر مفضلة بعد'),
+                  return Center(
+                    child: Text(S.of(context).favourites_no_favourites),
                   );
                 }
 
@@ -85,14 +86,14 @@ class Favourites extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             Text(
-              'المفضلة',
+              S.of(context).favourites_welcome_title,
               style: theme.textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 12),
             Text(
-              'سجّل الدخول لحفظ قائمة المتاجر المفضلة',
+              S.of(context).favourites_welcome_subtitle,
               textAlign: TextAlign.center,
               style: theme.textTheme.bodyLarge?.copyWith(
                 color: theme.textTheme.bodySmall?.color,

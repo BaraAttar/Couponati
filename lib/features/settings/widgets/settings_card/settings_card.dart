@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:my_app/core/constants/app_styles.dart';
 import 'package:my_app/features/settings/widgets/settings_card/language_bottom_sheet.dart';
 import 'package:my_app/features/settings/widgets/settings_card/theme_bottom_sheet.dart';
+import 'package:my_app/generated/l10n.dart';
 
 class SettingsCard extends StatelessWidget {
   const SettingsCard({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final s = S.of(context);
     final primary = Theme.of(context).colorScheme.primary;
     return Container(
       margin: const EdgeInsets.all(10),
@@ -21,7 +23,7 @@ class SettingsCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
             child: Text(
-              'الإعدادات',
+              s.navbar_settings,
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w700,
@@ -32,62 +34,47 @@ class SettingsCard extends StatelessWidget {
           ),
 
           // عناصر الإعدادات
-          // TODO
           _settingItem(
             context,
             icon: Icons.notifications_rounded,
-            title: 'الإشعارات',
-            subtitle: 'إدارة التنبيهات',
+            title: s.settings_notifications_title,
+            subtitle: s.settings_notifications_subtitle,
             color: Colors.orange,
             onTap: () {},
           ),
 
-          // TODO
           _settingItem(
             context,
             icon: Icons.language_rounded,
-            title: 'اللغة',
-            subtitle: 'العربية',
+            title: s.settings_language_title,
+            subtitle: s.settings_language_subtitle,
             color: Colors.blue,
             onTap: () => LanguageBottomSheet.show(context),
           ),
 
-          // TODO
           _settingItem(
             context,
             icon: Icons.dark_mode_rounded,
-            title: 'المظهر',
-            subtitle: 'فاتح / داكن',
+            title: s.settings_theme_title,
+            subtitle: s.settings_theme_subtitle,
             color: Colors.indigo,
             onTap: () => ThemeBottomSheet.show(context),
           ),
 
-          // TODO
-          _settingItem(
-            context,
-            icon: Icons.privacy_tip_rounded,
-            title: 'الخصوصية والأمان',
-            subtitle: 'إعدادات الحماية',
-            color: Colors.green,
-            onTap: () {},
-          ),
-
-          // TODO
           _settingItem(
             context,
             icon: Icons.help_rounded,
-            title: 'المساعدة والدعم',
-            subtitle: 'الأسئلة الشائعة',
+            title: s.settings_help_support_title,
+            subtitle: s.settings_help_support_subtitle,
             color: Colors.purple,
             onTap: () {},
           ),
 
-          // TODO
           _settingItem(
             context,
             icon: Icons.info_rounded,
-            title: 'حول التطبيق',
-            subtitle: 'الإصدار 1.0.0',
+            title: s.settings_about_title,
+            subtitle: s.settings_about_subtitle,
             color: Colors.grey,
             onTap: () {},
             showDivider: false,

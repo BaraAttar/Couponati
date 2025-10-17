@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/features/auth/auth_controller.dart';
+import 'package:my_app/generated/l10n.dart';
 import 'package:provider/provider.dart';
 
 class AccountServerError extends StatelessWidget {
@@ -14,7 +15,7 @@ class AccountServerError extends StatelessWidget {
             Icon(Icons.cloud_off, size: 48, color: Colors.red[400]),
             const SizedBox(height: 12),
             Text(
-              'تعذر الاتصال بالخادم',
+              S.of(context).account_server_error_title,
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
@@ -23,7 +24,7 @@ class AccountServerError extends StatelessWidget {
             ),
             const SizedBox(height: 6),
             Text(
-              auth.errorMessage ?? "خطأ غير معروف",
+              auth.errorMessage ?? S.of(context).account_server_error_unknown,
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 13, color: Colors.grey[600]),
             ),
@@ -33,7 +34,7 @@ class AccountServerError extends StatelessWidget {
                 auth.checkIfLoggedIn();
               },
               icon: const Icon(Icons.refresh, size: 18),
-              label: const Text('إعادة المحاولة'),
+              label: Text(S.of(context).account_server_error_retry),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red[400],
                 foregroundColor: Colors.white,

@@ -3,6 +3,7 @@ import 'package:my_app/core/logger/logger_service.dart';
 import 'package:my_app/features/home/controllers/store_controller.dart';
 import 'package:my_app/features/home/models/store_model.dart';
 import 'package:my_app/features/home/widgets/store_card.dart';
+import 'package:my_app/generated/l10n.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class StoresListView extends StatefulWidget {
@@ -109,11 +110,11 @@ class StoresListViewState extends State<StoresListView> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text("حدث خطأ أثناء تحميل المتاجر"),
+              Text(S.of(context).stores_error_loading),
               const SizedBox(height: 8),
               ElevatedButton(
                 onPressed: () => refreshStores(),
-                child: const Text("إعادة المحاولة"),
+                child: Text(S.of(context).stores_retry),
               ),
             ],
           ),
@@ -144,9 +145,9 @@ class StoresListViewState extends State<StoresListView> {
               ),
             );
           } else if (!_hasMoreData) {
-            return const Padding(
-              padding: EdgeInsets.all(16),
-              child: Center(child: Text("لا توجد متاجر أخرى")),
+            return Padding(
+              padding: const EdgeInsets.all(16),
+              child: Center(child: Text(S.of(context).stores_no_more)),
             );
           } else {
             return const SizedBox.shrink();

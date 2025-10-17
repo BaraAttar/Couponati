@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:my_app/features/home/controllers/search_controller.dart';
 import 'package:my_app/features/home/models/store_model.dart';
 import 'package:my_app/features/home/widgets/store_card.dart';
+import 'package:my_app/generated/l10n.dart';
 import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -74,6 +75,7 @@ class _SearchBarState extends State<SearchBarWidget> {
   // SearchBar Widget
   // ============================
   Widget _buildSearchBar(ThemeData theme) {
+    final s = S.of(context);
     return Container(
       height: 40,
       padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -99,7 +101,7 @@ class _SearchBarState extends State<SearchBarWidget> {
                 decoration: TextDecoration.none,
               ),
               decoration: InputDecoration(
-                hintText: 'ابحث هنا',
+                hintText: s.home_search_bar_hint,
                 hintStyle: TextStyle(
                   fontSize: 14,
                   color: theme.colorScheme.primary.withValues(alpha: 0.7),
@@ -180,7 +182,7 @@ class _SuggestionsCard extends StatelessWidget {
       // حالة فارغة
       return Center(
         child: Text(
-          "لا توجد نتائج",
+          S.of(context).searh_no_results,
           style: TextStyle(color: theme.colorScheme.primary, fontSize: 16),
         ),
       );

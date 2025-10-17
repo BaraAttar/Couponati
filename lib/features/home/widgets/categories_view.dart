@@ -1,6 +1,7 @@
 // lib/features/home/widgets/categories/categories_slider.dart
 import 'package:flutter/material.dart';
 import 'package:my_app/features/home/controllers/categories_controller.dart';
+import 'package:my_app/generated/l10n.dart';
 import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -38,9 +39,9 @@ class CategoriesSliderState extends State<CategoriesSlider> {
     }
 
     if (controller!.success == false || controller!.categories.isEmpty) {
-      return const Padding(
-        padding: EdgeInsets.all(10),
-        child: Center(child: Text("لا توجد فئات")),
+      return Padding(
+        padding: const EdgeInsets.all(10),
+        child: Center(child: Text(S.of(context).categories_no_categories)),
       );
     }
 
@@ -74,7 +75,7 @@ class CategoriesSliderState extends State<CategoriesSlider> {
                     height: 65,
                     child: ClipOval(child: ColoredBox(color: Colors.black)),
                   ),
-                  Text("*******"),
+                  Text(S.of(context).categories_loading_placeholder),
                 ],
               ),
             ),

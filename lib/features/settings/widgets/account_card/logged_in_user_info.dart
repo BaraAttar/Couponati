@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/features/auth/auth_controller.dart';
+import 'package:my_app/generated/l10n.dart';
 
 class LoggedInUserInfo extends StatelessWidget {
   final AuthController auth;
@@ -12,7 +13,7 @@ class LoggedInUserInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = auth.user;
-    final name = user?.firstName ?? 'مستخدم';
+    final name = user?.firstName ?? S.of(context).user_default_name;
     final email = user?.email ?? '';
 
     return Row(
@@ -57,7 +58,7 @@ class LoggedInUserInfo extends StatelessWidget {
                     ),
                     const SizedBox(width: 5),
                     Text(
-                      'حساب موثق',
+                      S.of(context).user_verified_account,
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w600,

@@ -5,6 +5,7 @@ import 'package:my_app/app/config.dart';
 import 'package:my_app/core/logger/logger_service.dart';
 import 'package:my_app/core/storage/token_storage.dart';
 import 'package:my_app/features/home/models/store_model.dart';
+import 'package:my_app/generated/l10n.dart';
 
 class FavouritesController extends ChangeNotifier {
   List<StoreModel> _favourites = [];
@@ -82,7 +83,7 @@ class FavouritesController extends ChangeNotifier {
   Future<void> fetchFavourites() async {
     final token = await TokenStorage.getToken();
     if (token == null) {
-      _setErrorMessage('يجب تسجيل الدخول أولاً');
+      _setErrorMessage(S.current.favourites_login_required);
       return;
     }
 
@@ -101,11 +102,11 @@ class FavouritesController extends ChangeNotifier {
             .toList(growable: true);
         _setErrorMessage(null);
       } else {
-        _setErrorMessage('فشل تحميل المفضلة (${response.statusCode})');
+        _setErrorMessage('${S.current.favourites_load_failed} (${response.statusCode})');
       }
     } catch (e) {
       AppLogger.e('خطأ في تحميل المفضلة: $e');
-      _setErrorMessage('مشكلة في الاتصال');
+      _setErrorMessage(S.current.favourites_connection_error);
     } finally {
       _setLoading(false);
     }
@@ -114,7 +115,7 @@ class FavouritesController extends ChangeNotifier {
   Future<void> toggleFavourite(StoreModel store) async {
     final token = await TokenStorage.getToken();
     if (token == null) {
-      _setErrorMessage('يجب تسجيل الدخول أولاً');
+      _setErrorMessage(S.current.favourites_login_required);
       return;
     }
 
@@ -154,7 +155,7 @@ class FavouritesController extends ChangeNotifier {
       AppLogger.e(
         'فشل تحديث المفضلة: ${response.statusCode} - ${response.body}',
       );
-      _setErrorMessage('فشل التحديث (${response.statusCode})');
+      _setErrorMessage('${S.current.favourites_update_failed} (${response.statusCode})');
     }
     } catch (e) {
        if (isCurrentlyFavourite) {
@@ -164,7 +165,7 @@ class FavouritesController extends ChangeNotifier {
     }
       notifyListeners();
       AppLogger.e('خطأ في تحديث المفضلة: $e');
-      _setErrorMessage('مشكلة في الاتصال');
+      _setErrorMessage(S.current.favourites_connection_error);
     }
   }
 }
