@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_app/app/api_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocaleProvider extends ChangeNotifier {
@@ -14,6 +15,7 @@ class LocaleProvider extends ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     final lang = prefs.getString('languageCode') ?? 'ar';
     _locale = Locale(lang);
+    ApiService.setLanguage(lang);
     notifyListeners();
   }
 
@@ -24,5 +26,6 @@ class LocaleProvider extends ChangeNotifier {
 
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('languageCode', newLocale.languageCode);
+    ApiService.setLanguage(newLocale.languageCode);
   }
 }
