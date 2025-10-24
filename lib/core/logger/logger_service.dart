@@ -1,4 +1,5 @@
 // lib/core/logger/logger_service.dart
+import 'dart:convert';
 import 'package:logger/logger.dart';
 import 'package:flutter/foundation.dart';
 
@@ -16,7 +17,7 @@ class AppLogger {
 
     _logger = Logger(
       level: _getLoggerLevel(logLevel),
-      printer: kDebugMode 
+      printer: kDebugMode
           ? PrettyPrinter(
               methodCount: 2,
               errorMethodCount: 5,
@@ -28,7 +29,7 @@ class AppLogger {
           : SimplePrinter(colors: false), // للإنتاج
       filter: kDebugMode ? DevelopmentFilter() : ProductionFilter(),
     );
-    
+
     _initialized = true;
   }
 
@@ -73,12 +74,17 @@ class AppLogger {
     _logger.f(message, error: error, stackTrace: stackTrace);
   }
 
-  // Context-specific logging
-  static void api(String endpoint, {String? method, int? statusCode, dynamic data}) {
-    final prefix = statusCode != null 
-        ? (statusCode >= 200 && statusCode < 300 ? '✅' : '❌')
-        : '🌐';
-    i('$prefix API ${method ?? 'CALL'}: $endpoint${statusCode != null ? ' ($statusCode)' : ''}', data);
+  static void api(
+    dynamic data, {
+    String? method,
+    int? statusCode,
+    dynamic endpoint,
+  }) {
+    _ensureInitialized();
+    final decoded = jsonDecode(data.body);
+    const encoder = JsonEncoder.withIndent('  ');
+    final prettyJson = encoder.convert(decoded);
+    _logger.d(prettyJson);
   }
 
   static void ui(String event, [dynamic data]) {
