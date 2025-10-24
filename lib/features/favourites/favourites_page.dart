@@ -1,6 +1,5 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
-// import 'package:my_app/core/logger/logger_service.dart';
-// import 'package:my_app/core/storage/token_storage.dart';
 import 'package:my_app/features/auth/auth_controller.dart';
 import 'package:my_app/features/auth/widgets/google_signin_button.dart';
 import 'package:my_app/features/favourites/favourites_controller.dart';
@@ -13,62 +12,99 @@ import 'package:skeletonizer/skeletonizer.dart';
 class Favourites extends StatelessWidget {
   const Favourites({super.key});
 
+  Future<void> _onRefresh(FavouritesController favController) async {
+    await favController.fetchFavourites();
+  }
+
   @override
   Widget build(BuildContext context) {
-    // void onPressed() async {
-    //   final token = await TokenStorage.getToken();
-    //   AppLogger.d(token.toString());
-    // }
+    final theme = Theme.of(context);
+    final favController = context.read<FavouritesController>();
+    final headerHeight = kToolbarHeight + MediaQuery.of(context).padding.top;
 
     return Scaffold(
-      appBar: AppBar(title: Text(S.of(context).favourites_title), centerTitle: true),
-      body: SafeArea(
-        child: Consumer<AuthController>(
-          builder: (context, auth, child) {
-            // return ElevatedButton(onPressed: onPressed, child: Text("token"));
-            if (auth.isLoading) {
-              return const Center(child: CircularProgressIndicator());
-            }
-
-            if (!auth.isLoggedIn) {
-              return _buildGuestView(context);
-            }
-
-            final favController = context.read<FavouritesController>();
-
-            // تحميل المفضلة عند تسجيل الدخول إذا كانت فارغة
-            if (favController.favourites.isEmpty && !favController.isLoading) {
-              favController.fetchFavourites();
-            }
-
-            return Consumer<FavouritesController>(
-              builder: (context, favourites, child) {
-                if (favourites.isLoading) {
-                  return _loadingSkeletonContent();
+      backgroundColor: Theme.of(context).colorScheme.surfaceDim,
+      body: Stack(
+        children: [
+          // ✅ المحتوى الرئيسي مع السحب للتحديث
+          RefreshIndicator(
+            displacement: headerHeight + 20,
+            onRefresh: () => _onRefresh(favController),
+            child: Consumer<AuthController>(
+              builder: (context, auth, _) {
+                if (auth.isLoading) {
+                  return const Center(child: CircularProgressIndicator());
                 }
 
-                if (favourites.favourites.isEmpty) {
-                  return Center(
-                    child: Text(S.of(context).favourites_no_favourites),
-                  );
+                if (!auth.isLoggedIn) {
+                  return _buildGuestView(context, headerHeight);
                 }
 
-                return _favouritesListContent(context, favourites.favourites);
+                return Consumer<FavouritesController>(
+                  builder: (context, favourites, _) {
+                    if (favourites.isLoading) {
+                      return _loadingSkeletonContent(headerHeight);
+                    }
+
+                    final favList = favourites.favourites;
+
+                    if (favList.isEmpty) {
+                      return _emptyFavouritesView(context, headerHeight);
+                    }
+
+                    return _favouritesListContent(
+                      context,
+                      favList,
+                      headerHeight,
+                    );
+                  },
+                );
               },
-            );
-          },
-        ),
+            ),
+          ),
+
+          // ✅ الهيدر الزجاجي (Blur)
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: ClipRect(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                child: Container(
+                  height: headerHeight,
+                  padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).padding.top,
+                  ),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.surface.withValues(alpha: 0.7),
+                  ),
+                  child: Text(
+                    S.of(context).favourites_title,
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: theme.colorScheme.onSurface,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildGuestView(BuildContext context) {
+  /// 🩵 واجهة المستخدم في حال المستخدم ضيف
+  Widget _buildGuestView(BuildContext context, double headerHeight) {
     final theme = Theme.of(context);
 
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
+    return ListView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      padding: EdgeInsets.only(top: headerHeight + 40, left: 24, right: 24),
+      children: [
+        Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
@@ -100,15 +136,18 @@ class Favourites extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 32),
-            GoogleSigninButton(),
+            const GoogleSigninButton(),
           ],
         ),
-      ),
+      ],
     );
   }
 
-  Widget _loadingSkeletonContent() {
+  /// 🩶 محتوى التحميل (skeletons)
+  Widget _loadingSkeletonContent(double headerHeight) {
     return ListView.builder(
+      padding: EdgeInsets.only(top: headerHeight + 8, bottom: 32),
+      physics: const AlwaysScrollableScrollPhysics(),
       itemCount: 3,
       itemBuilder: (context, index) {
         return Skeletonizer(
@@ -125,17 +164,36 @@ class Favourites extends StatelessWidget {
     );
   }
 
+  /// ❤️ قائمة المفضلات
   Widget _favouritesListContent(
     BuildContext context,
     List<StoreModel> favouritesList,
+    double headerHeight,
   ) {
     return ListView.builder(
+      padding: EdgeInsets.only(top: headerHeight + 8, bottom: 32),
+      physics: const AlwaysScrollableScrollPhysics(),
       itemCount: favouritesList.length,
       itemBuilder: (context, index) {
-        // AppLogger.d(favouritesList[index].coupon.length.toString());
         final store = favouritesList[index];
         return StoreCard(store: store);
       },
+    );
+  }
+
+  /// 🩶 في حال لا توجد مفضلة
+  Widget _emptyFavouritesView(BuildContext context, double headerHeight) {
+    return ListView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      padding: EdgeInsets.only(top: headerHeight + 100),
+      children: [
+        Center(
+          child: Text(
+            S.of(context).favourites_no_favourites,
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
+        ),
+      ],
     );
   }
 }

@@ -47,7 +47,7 @@ class _SettingsState extends State<Settings> {
               child: Container(
                 height: MediaQuery.of(context).padding.top,
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.surfaceDim.withValues(alpha: 0.7),
+                  color: theme.colorScheme.surface.withValues(alpha: 0.7),
                 ),
               ),
             ),
