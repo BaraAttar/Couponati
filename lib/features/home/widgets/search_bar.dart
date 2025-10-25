@@ -49,6 +49,7 @@ class _SearchBarState extends State<SearchBarWidget> {
 
   void _onSearchChanged() {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
+    if (_textController.text.isEmpty) return;
 
     _debounce = Timer(const Duration(milliseconds: 500), () {
       _controller.fetchStoresByName(_textController.text);

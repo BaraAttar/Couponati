@@ -1,5 +1,6 @@
 // lib/features/home/widgets/categories/categories_slider.dart
 import 'package:flutter/material.dart';
+import 'package:my_app/core/logger/logger_service.dart';
 import 'package:my_app/features/home/controllers/categories_controller.dart';
 import 'package:my_app/generated/l10n.dart';
 import 'package:provider/provider.dart';
@@ -164,7 +165,7 @@ class CategoriesSliderState extends State<CategoriesSlider> {
           padding: EdgeInsets.all(
             isSelected ? 10.0 : 14.0,
           ), // تقليل الـ padding عند التحديد
-          child: _buildImageWithFallback( context,icon),
+          child: _buildImageWithFallback(context, icon),
         ),
       ),
     );
@@ -176,6 +177,7 @@ class CategoriesSliderState extends State<CategoriesSlider> {
       return _buildFallbackIcon();
     }
 
+    // TODO: add fetch icon ,replace from assest to fetch and save on chash Use cached_network_image
     final String iconPath = "assets/icons/${icon.toString().trim()}.png";
 
     return Image.asset(
@@ -185,6 +187,7 @@ class CategoriesSliderState extends State<CategoriesSlider> {
       fit: BoxFit.contain,
       color: Theme.of(context).colorScheme.primary,
       errorBuilder: (context, error, stackTrace) {
+        AppLogger.d('Error details: $error');
         return _buildFallbackIcon();
       },
       frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {

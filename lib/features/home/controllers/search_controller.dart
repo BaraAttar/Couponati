@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:my_app/app/api_service.dart';
 import 'package:my_app/core/logger/logger_service.dart';
 import 'package:my_app/features/home/models/store_model.dart';
 import 'package:my_app/app/config.dart';
@@ -25,16 +25,16 @@ class SearchBarController extends ChangeNotifier {
   }
 
   Future<void> fetchStoresByName(String query) async {
-    _setLoading(true);
-
-    final queryParameters = {'name': query.toString()};
-
-    final uri = Uri.parse(
-      AppConfig.getStores,
-    ).replace(queryParameters: queryParameters);
-
     try {
-      final response = await http.get(uri);
+      _setLoading(true);
+
+      final queryParameters = {'name': query.toString()};
+
+      final uri = Uri.parse(
+        AppConfig.getStores,
+      ).replace(queryParameters: queryParameters);
+
+      final response = await ApiService.get(uri);
 
       if (response.statusCode == 200) {
         final decoded = jsonDecode(response.body);

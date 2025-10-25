@@ -3,8 +3,8 @@
 
 class AppConfig {
   // static const String baseUrl = "http://10.0.2.2:3000";
-  // static const String baseUrl = "http://localhost:3000";
-  static const String baseUrl = "https://couponati-api.onrender.com";
+  static const String baseUrl = "http://localhost:3000";
+  // static const String baseUrl = "https://couponati-api.onrender.com";
 
   // static String baseUrl = dotenv.env['BASE_URL'] ?? "http://localhost:3000";
 

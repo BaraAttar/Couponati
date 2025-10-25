@@ -1,10 +1,9 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:my_app/app/api_service.dart';
 import 'package:my_app/app/config.dart';
 import 'package:my_app/core/logger/logger_service.dart';
 import 'package:my_app/features/home/models/category_model.dart';
-import 'package:http/http.dart' as http;
 
 class CategoriesController extends ChangeNotifier {
   List<CategoryModel> _categories = [];
@@ -29,14 +28,15 @@ class CategoriesController extends ChangeNotifier {
 
   void setSelectedCategoryId(String id) {
     _selectedCategoryId = id;
-    // AppLogger.d("************** selectedCategoryId: $_selectedCategoryId");
     notifyListeners();
   }
 
   Future<void> fetchCategories() async {
-    _setLoading(true);
     try {
-      final response = await http.get(Uri.parse(AppConfig.getCategories));
+      _setLoading(true);
+
+      final uri = Uri.parse(AppConfig.getCategories);
+      final response = await ApiService.get(uri);
 
       if (response.statusCode == 200) {
         final decoded = jsonDecode(response.body);

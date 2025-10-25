@@ -62,7 +62,7 @@ class BannerSliderViewState extends State<BannerSliderView> {
 
     return CarouselSlider.builder(
       itemCount: itemCount,
-      itemBuilder: (context, index, realIndex) {
+      itemBuilder: (context, index, int realIndex) {
         if (isLoading) return Skeletonizer(child: _skeletonItem());
         if (isError) return _errorItem();
         if (isEmpty) return _emptyItem();

@@ -1,7 +1,7 @@
 // lib/features/home/widgets/stores/store_controller.dart
 import 'dart:async';
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:my_app/app/api_service.dart';
 import 'package:my_app/app/config.dart';
 import 'package:my_app/core/logger/logger_service.dart';
 import 'package:my_app/features/home/models/store_model.dart';
@@ -22,14 +22,7 @@ class StoreController {
         AppConfig.getStores,
       ).replace(queryParameters: queryParameters);
 
-      final response = await http
-          .get(uri)
-          .timeout(
-            const Duration(seconds: 60),
-            onTimeout: () {
-              throw TimeoutException('Request timed out');
-            },
-          );
+      final response = await ApiService.get(uri);
 
       if (response.statusCode == 200) {
         final decoded = jsonDecode(response.body);

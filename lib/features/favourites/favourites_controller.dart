@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:my_app/app/api_service.dart';
 import 'package:my_app/app/config.dart';
 import 'package:my_app/core/logger/logger_service.dart';
 import 'package:my_app/core/storage/token_storage.dart';
@@ -36,37 +37,6 @@ class FavouritesController extends ChangeNotifier {
   }
 
   void setFavouritesFromAuth(List<StoreModel> favourites) {
-
-    // for (int i = 0; i < favourites.length; i++) {
-    //   final store = favourites[i];
-    //   AppLogger.d(
-    //     '📦 متجر #${i + 1}:\n'
-    //     '   ├─ ID: ${store.id}\n'
-    //     '   ├─ Name: ${store.name}\n'
-    //     '   ├─ Icon: ${store.icon}\n'
-    //     '   ├─ Description: ${store.description}\n'
-    //     '   └─ عدد الكوبونات: ${store.coupon.length}',
-    //   );
-      
-    //   // طباعة تفاصيل الكوبونات
-    //   if (store.coupon.isNotEmpty) {
-    //     for (int j = 0; j < store.coupon.length; j++) {
-    //       final coupon = store.coupon[j];
-    //       AppLogger.d(
-    //         '      🎟️  كوبون #${j + 1}:\n'
-    //         '         ├─ Code: ${coupon.code}\n'
-    //         '         ├─ Discount: ${coupon.discount}%\n'
-    //         '         └─ Description: ${coupon.description}',
-    //       );
-    //     }
-    //   } else {
-    //     // AppLogger.w('      ⚠️  لا توجد كوبونات في هذا المتجر!');
-    //   }
-    // }
-
-    // AppLogger.i(
-    //   'FavouritesController: استقبلت قائمة المفضلة من المصادقة (${favourites.length} عنصر)',
-    // );
     _favourites = favourites;
     _setErrorMessage(null);
     _setLoading(false);
@@ -81,28 +51,35 @@ class FavouritesController extends ChangeNotifier {
   }
 
   Future<void> fetchFavourites() async {
-    final token = await TokenStorage.getToken();
-    if (token == null) {
-      _setErrorMessage(S.current.favourites_login_required);
-      return;
-    }
-
-    _setLoading(true);
-
     try {
-      final response = await http.get(
-        Uri.parse(AppConfig.userFavourites),
-        headers: {'Authorization': 'Bearer $token'},
-      );
+      final token = await TokenStorage.getToken();
+      if (token == null) {
+        _setErrorMessage(S.current.favourites_login_required);
+        return;
+      }
+
+      _setLoading(true);
+
+      final uri = Uri.parse(AppConfig.userFavourites);
+      final response = await ApiService.get(uri);
 
       if (response.statusCode == 200) {
-        final List data = jsonDecode(response.body);
-        _favourites = data
-            .map((e) => StoreModel.fromJson(e))
-            .toList(growable: true);
+        final body = jsonDecode(response.body);
+
+        if (body is List) {
+          _favourites = body
+              .map((e) => StoreModel.fromJson(e))
+              .toList(growable: true);
+        } else if (body is Map && body['data'] is List) {
+          _favourites = (body['data'] as List)
+              .map((e) => StoreModel.fromJson(e))
+              .toList(growable: true);
+        }
         _setErrorMessage(null);
       } else {
-        _setErrorMessage('${S.current.favourites_load_failed} (${response.statusCode})');
+        _setErrorMessage(
+          '${S.current.favourites_load_failed} (${response.statusCode})',
+        );
       }
     } catch (e) {
       AppLogger.e('خطأ في تحميل المفضلة: $e');
@@ -130,6 +107,19 @@ class FavouritesController extends ChangeNotifier {
     notifyListeners();
 
     try {
+      // final response = isCurrentlyFavourite
+      //     ? await http.delete(
+      //         Uri.parse('${AppConfig.userFavourites}/${store.id}'),
+      //         headers: {'Authorization': 'Bearer $token'},
+      //       )
+      //     : await http.post(
+      //         endpoint,
+      //         headers: {
+      //           'Content-Type': 'application/json',
+      //           'Authorization': 'Bearer $token',
+      //         },
+      //         body: jsonEncode({'storeId': store.id}),
+      //       );
       final response = isCurrentlyFavourite
           ? await http.delete(
               Uri.parse('${AppConfig.userFavourites}/${store.id}'),
@@ -145,24 +135,26 @@ class FavouritesController extends ChangeNotifier {
             );
 
       if (response.statusCode != 200) {
-      // لو فشل السيرفر، ارجع الحالة السابقة
+        // لو فشل السيرفر، ارجع الحالة السابقة
+        if (isCurrentlyFavourite) {
+          _favourites.add(store);
+        } else {
+          _favourites.removeWhere((s) => s.id == store.id);
+        }
+        notifyListeners();
+        AppLogger.e(
+          'فشل تحديث المفضلة: ${response.statusCode} - ${response.body}',
+        );
+        _setErrorMessage(
+          '${S.current.favourites_update_failed} (${response.statusCode})',
+        );
+      }
+    } catch (e) {
       if (isCurrentlyFavourite) {
         _favourites.add(store);
       } else {
         _favourites.removeWhere((s) => s.id == store.id);
       }
-      notifyListeners();
-      AppLogger.e(
-        'فشل تحديث المفضلة: ${response.statusCode} - ${response.body}',
-      );
-      _setErrorMessage('${S.current.favourites_update_failed} (${response.statusCode})');
-    }
-    } catch (e) {
-       if (isCurrentlyFavourite) {
-      _favourites.add(store);
-    } else {
-      _favourites.removeWhere((s) => s.id == store.id);
-    }
       notifyListeners();
       AppLogger.e('خطأ في تحديث المفضلة: $e');
       _setErrorMessage(S.current.favourites_connection_error);

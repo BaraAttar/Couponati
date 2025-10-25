@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:my_app/app/api_service.dart';
 import 'dart:convert';
 import 'package:my_app/app/config.dart';
 import 'package:my_app/core/logger/logger_service.dart';
@@ -25,10 +25,11 @@ class BannerController extends ChangeNotifier {
   }
 
   Future<void> fetchBanners() async {
-    _setLoading(true);
-
     try {
-      final response = await http.get(Uri.parse(AppConfig.getBanners));
+      _setLoading(true);
+
+      final uri = Uri.parse(AppConfig.getBanners);
+      final response = await ApiService.get(uri);
 
       if (response.statusCode == 200) {
         final decoded = jsonDecode(response.body);
@@ -42,7 +43,6 @@ class BannerController extends ChangeNotifier {
           _setSuccess(false);
         }
 
-        // AppLogger.d('Banners success: ${controllerModel.data.length}');
       } else {
         _banners = [];
         _setSuccess(false);

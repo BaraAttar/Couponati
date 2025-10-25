@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:http/http.dart' as http;
+import 'package:my_app/app/api_service.dart';
 import 'package:my_app/app/config.dart';
 import 'package:my_app/core/logger/logger_service.dart';
 import 'package:my_app/core/storage/token_storage.dart';
@@ -79,23 +79,21 @@ class AuthController extends ChangeNotifier {
   }
 
   Future<void> _sendToServer(GoogleSignInAccount account) async {
-    _setLoading(true);
-    _clearErrors();
-
-    final idToken = account.authentication.idToken;
-
-    if (idToken == null) {
-      AppLogger.d('لم يتم الحصول على idToken');
-      _setErrorMessage('فشل الحصول على رمز المصادقة');
-      return;
-    }
-
     try {
-      final response = await http.post(
-        Uri.parse(AppConfig.postAuth),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({"idToken": idToken}),
-      );
+      _setLoading(true);
+      _clearErrors();
+
+      final idToken = account.authentication.idToken;
+
+      if (idToken == null) {
+        AppLogger.d('لم يتم الحصول على idToken');
+        _setErrorMessage('فشل الحصول  على رمز المصادقة');
+        return;
+      }
+
+      final uri = Uri.parse(AppConfig.postAuth);
+      final body = {"idToken": idToken};
+      final response = await ApiService.post(uri, body);
 
       if (response.statusCode != 200) {
         AppLogger.d('Server error: ${response.statusCode} - ${response.body}');
@@ -112,10 +110,10 @@ class AuthController extends ChangeNotifier {
   }
 
   Future<void> checkIfLoggedIn() async {
-    _setLoading(true);
-    _clearErrors();
-
     try {
+      _setLoading(true);
+      _clearErrors();
+
       final token = await TokenStorage.getToken();
 
       if (token == null || token.isEmpty) {
@@ -133,23 +131,18 @@ class AuthController extends ChangeNotifier {
   }
 
   Future<void> verifyStoredToken(String? token) async {
-    _clearErrors();
-
-    if (token == null) {
-      AppLogger.d('لم يتم الحصول على token');
-      _setErrorMessage('فشل الحصول على رمز المصادقة');
-      _setIsLoggedIn(false);
-      return;
-    }
-
     try {
-      final response = await http.post(
-        Uri.parse(AppConfig.verifyToken),
-        headers: {
-          'Content-Type': 'application/json',
-          "authorization": 'Bearer $token',
-        },
-      );
+      _clearErrors();
+
+      if (token == null) {
+        AppLogger.d('لم يتم الحصول على token');
+        _setErrorMessage('فشل الحصول على رمز المصادقة');
+        _setIsLoggedIn(false);
+        return;
+      }
+
+      final uri = Uri.parse(AppConfig.verifyToken);
+      final response = await ApiService.post(uri, {});
 
       final decoded = jsonDecode(response.body);
       _handleAuthResponse(decoded);

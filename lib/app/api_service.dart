@@ -29,82 +29,78 @@ class ApiService {
     }
   }
 
-  static Future<http.Response> get(String url) async {
+  static Future<http.Response> get(Uri uri) async {
     try {
-      final uri = Uri.parse(url);
       final headers = await _getHeaders();
       AppLogger.d("GET $uri");
-      
-      return await http.get(uri, headers: headers).timeout(
-        const Duration(seconds: 30),
-        onTimeout: () {
-          throw TimeoutException('Request timeout');
-        },
-      );
+
+      return await http
+          .get(uri, headers: headers)
+          .timeout(
+            const Duration(seconds: 60),
+            onTimeout: () {
+              throw TimeoutException('Request timeout');
+            },
+          );
     } catch (e) {
       AppLogger.e("GET Error: $e");
       rethrow;
     }
   }
 
-  static Future<http.Response> post(String url, dynamic body) async {
+  static Future<http.Response> post(Uri uri, dynamic body) async {
     try {
-      final uri = Uri.parse(url);
       final headers = await _getHeaders();
       final encodedBody = jsonEncode(body);
       AppLogger.d("POST $uri\nBody: $encodedBody");
-      
-      return await http.post(
-        uri, 
-        headers: headers, 
-        body: encodedBody,
-      ).timeout(
-        const Duration(seconds: 30),
-        onTimeout: () {
-          throw TimeoutException('Request timeout');
-        },
-      );
+
+      return await http
+          .post(uri, headers: headers, body: encodedBody)
+          .timeout(
+            const Duration(seconds: 60),
+            onTimeout: () {
+              throw TimeoutException('Request timeout');
+            },
+          );
     } catch (e) {
       AppLogger.e("POST Error: $e");
       rethrow;
     }
   }
 
-  static Future<http.Response> put(String url, dynamic body) async {
+  static Future<http.Response> put(Uri uri, dynamic body) async {
     try {
-      final uri = Uri.parse(url);
       final headers = await _getHeaders();
       final encodedBody = jsonEncode(body);
       AppLogger.d("PUT $uri\nBody: $encodedBody");
-      
-      return await http.put(
-        uri, 
-        headers: headers, 
-        body: encodedBody,
-      ).timeout(
-        const Duration(seconds: 30),
-        onTimeout: () {
-          throw TimeoutException('Request timeout');
-        },
-      );
+
+      return await http
+          .put(uri, headers: headers, body: encodedBody)
+          .timeout(
+            const Duration(seconds: 60),
+            onTimeout: () {
+              throw TimeoutException('Request timeout');
+            },
+          );
     } catch (e) {
       AppLogger.e("PUT Error: $e");
       rethrow;
     }
   }
 
-  static Future<http.Response> delete(String url) async {
+  static Future<http.Response> delete(Uri uri) async {
     try {
-      final uri = Uri.parse(url);
       final headers = await _getHeaders();
       AppLogger.d("DELETE $uri");
-      
-      return await http.delete(uri, headers: headers).timeout(
-        const Duration(seconds: 30),
-        onTimeout: () {
-          throw TimeoutException('Request timeout');
-        },
-      );
+
+      return await http
+          .delete(uri, headers: headers)
+          .timeout(
+            const Duration(seconds: 60),
+            onTimeout: () {
+              throw TimeoutException('Request timeout');
+            },
+          );
     } catch (e) {
       AppLogger.e("DELETE Error: $e");
       rethrow;

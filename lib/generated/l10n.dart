@@ -18,10 +18,8 @@ class S {
   static S? _current;
 
   static S get current {
-    assert(
-      _current != null,
-      'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.',
-    );
+    assert(_current != null,
+        'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
     return _current!;
   }
 
@@ -43,10 +41,8 @@ class S {
 
   static S of(BuildContext context) {
     final instance = S.maybeOf(context);
-    assert(
-      instance != null,
-      'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?',
-    );
+    assert(instance != null,
+        'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
     return instance!;
   }
 
@@ -56,7 +52,12 @@ class S {
 
   /// `Home`
   String get navbar_home {
-    return Intl.message('Home', name: 'navbar_home', desc: '', args: []);
+    return Intl.message(
+      'Home',
+      name: 'navbar_home',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Favourites`
@@ -191,7 +192,12 @@ class S {
 
   /// `Logout`
   String get settings_logout {
-    return Intl.message('Logout', name: 'settings_logout', desc: '', args: []);
+    return Intl.message(
+      'Logout',
+      name: 'settings_logout',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Arabic`
@@ -336,7 +342,12 @@ class S {
 
   /// `Retry`
   String get stores_retry {
-    return Intl.message('Retry', name: 'stores_retry', desc: '', args: []);
+    return Intl.message(
+      'Retry',
+      name: 'stores_retry',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `No more stores`
@@ -381,7 +392,12 @@ class S {
 
   /// `User`
   String get user_default_name {
-    return Intl.message('User', name: 'user_default_name', desc: '', args: []);
+    return Intl.message(
+      'User',
+      name: 'user_default_name',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Verified Account`
@@ -416,12 +432,22 @@ class S {
 
   /// `Copied`
   String get coupon_copied {
-    return Intl.message('Copied', name: 'coupon_copied', desc: '', args: []);
+    return Intl.message(
+      'Copied',
+      name: 'coupon_copied',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Copy`
   String get coupon_copy {
-    return Intl.message('Copy', name: 'coupon_copy', desc: '', args: []);
+    return Intl.message(
+      'Copy',
+      name: 'coupon_copy',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `No banners available at the moment`
