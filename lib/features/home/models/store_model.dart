@@ -1,5 +1,5 @@
 // lib/features/home/widgets/stores/store_model.dart
-import 'package:my_app/features/store_screen/coupon_model.dart';
+import 'package:my_app/features/store_screen/models/coupon_model.dart';
 
 class StoreModel {
   final String id;

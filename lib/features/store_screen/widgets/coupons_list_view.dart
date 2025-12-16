@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
-import 'package:my_app/features/store_screen/coupon_model.dart';
+import 'package:my_app/features/store_screen/models/coupon_model.dart';
 import 'package:my_app/generated/l10n.dart';
 
 class CouponsListView extends StatelessWidget {
   final List<CouponModel> couponsList;
-  const CouponsListView({super.key, required this.couponsList});
+  final void Function(String couponId)? onCouponCopied;
+
+  const CouponsListView({
+    super.key,
+    required this.couponsList,
+    this.onCouponCopied,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +45,7 @@ class CouponsListView extends StatelessWidget {
             textDirection: TextDirection.rtl,
             children: [
               // الجزء الأيمن - معلومات الكوبون
-              Flexible(flex: 3, child: _reightPart(context, coupon)),
+              Flexible(flex: 3, child: _rightPart(context, coupon)),
 
               // الجزء الأيسر - نسبة الخصم
               Flexible(flex: 2, child: _leftPart(context, coupon)),
@@ -104,57 +110,63 @@ class CouponsListView extends StatelessWidget {
   }
 
   Widget _copyButton(BuildContext context, {String? textToCopy}) {
-  bool isCopied = false;
+    bool isCopied = false;
 
-  return StatefulBuilder(
-    builder: (context, setState) {
-      return Bounceable(
-        onTap: isCopied
-            ? null
-            : () {
-                if (textToCopy != null) {
-                  Clipboard.setData(ClipboardData(text: textToCopy));
-                  setState(() => isCopied = true);
-                  Future.delayed(const Duration(seconds: 2),
-                      () => setState(() => isCopied = false));
-                }
-              },
-        child: Container(
-          width: 80,
-          height: 35,
-          decoration: BoxDecoration(
-            color: isCopied
-                ? Color(0xFF41A67E)
-                : Theme.of(context).colorScheme.primary,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                isCopied ? S.of(context).coupon_copied : S.of(context).coupon_copy,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.surface,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return Bounceable(
+          onTap: isCopied
+              ? null
+              : () {
+                  if (textToCopy != null) {
+                    Clipboard.setData(ClipboardData(text: textToCopy));
+                    setState(() => isCopied = true);
+                    Future.delayed(
+                      const Duration(seconds: 2),
+                      () => setState(() => isCopied = false),
+                    );
+                    if (onCouponCopied != null) {
+                      onCouponCopied!(textToCopy);
+                    }
+                  }
+                },
+          child: Container(
+            width: 80,
+            height: 35,
+            decoration: BoxDecoration(
+              color: isCopied
+                  ? Color(0xFF41A67E)
+                  : Theme.of(context).colorScheme.primary,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  isCopied
+                      ? S.of(context).coupon_copied
+                      : S.of(context).coupon_copy,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.surface,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
                 ),
-              ),
-              const SizedBox(width: 4),
-              Icon(
-                isCopied ? Icons.check_rounded : Icons.copy_rounded,
-                size: 20,
-                color: Theme.of(context).colorScheme.surface,
-              ),
-            ],
+                const SizedBox(width: 4),
+                Icon(
+                  isCopied ? Icons.check_rounded : Icons.copy_rounded,
+                  size: 20,
+                  color: Theme.of(context).colorScheme.surface,
+                ),
+              ],
+            ),
           ),
-        ),
-      );
-    },
-  );
-}
+        );
+      },
+    );
+  }
 
-
-  Widget _reightPart(BuildContext context , CouponModel coupon) {
+  Widget _rightPart(BuildContext context, CouponModel coupon) {
     return Container(
       padding: const EdgeInsets.all(8),
       child: Center(
@@ -165,20 +177,25 @@ class CouponsListView extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Container(
-                padding: EdgeInsets.only(top:5 , left: 10 , right: 10),
+                padding: EdgeInsets.only(top: 5, left: 10, right: 10),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceDim.withValues(alpha: 0.5),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.surfaceDim.withValues(alpha: 0.5),
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
                     width: 1.5,
-                    color: Theme.of(context).colorScheme.secondary
-                    )),
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                ),
                 child: Center(
                   child: Text(
                     coupon.code,
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
-                      fontSize: 20, fontWeight: FontWeight.bold),
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
