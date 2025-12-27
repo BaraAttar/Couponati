@@ -4,6 +4,7 @@ import 'package:my_app/app/api_service.dart';
 import 'package:my_app/app/config.dart';
 import 'package:my_app/core/logger/logger_service.dart';
 import 'package:my_app/features/home/models/category_model.dart';
+import 'package:my_app/generated/l10n.dart';
 
 class CategoriesController extends ChangeNotifier {
   List<CategoryModel> _categories = [];
@@ -42,15 +43,14 @@ class CategoriesController extends ChangeNotifier {
         final decoded = jsonDecode(response.body);
         final controllerModel = CategoriesControllerModel.fromJson(decoded);
 
-        // إضافة فئة "الكل" في البداية
+        // إضافة فئة "الكل" في البداية (مترجمة بحسب لغة التطبيق)
         _categories = [
-          CategoryModel(id: 'all', name: 'all', order: 0, icon: "all"),
+          CategoryModel(id: 'all', name: S.current.categories_all, order: 0, icon: "all"),
           ...controllerModel.data,
         ];
 
         _selectedCategoryId ??= 'all';
         _setSuccess(true);
-        // AppLogger.d(_categories.map((i)=> i.icon).toString());
       } else {
         _categories = [];
       }

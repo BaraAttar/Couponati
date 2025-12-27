@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
-// import 'package:my_app/features/auth/auth_controller.dart';
 import 'package:my_app/features/favourites/favourites_controller.dart';
 import 'package:my_app/features/home/models/store_model.dart';
 import 'package:my_app/features/home/widgets/store_card.dart';
@@ -54,6 +53,8 @@ class StoreScreenHeader extends StatelessWidget {
   }
 
   Widget _topBarActions(BuildContext context, double coverHeight) {
+    final theme = Theme.of(context).colorScheme;
+
     final isFav = context.select<FavouritesController, bool>(
       (favourites) => favourites.isFavourite(store.id),
     );
@@ -68,6 +69,7 @@ class StoreScreenHeader extends StatelessWidget {
           _buildActionButton(
             context,
             icon: Icons.arrow_back_ios_new_rounded,
+            color: theme.primary,
             onTap: () => _handleBack(context),
           ),
           Row(
@@ -76,6 +78,8 @@ class StoreScreenHeader extends StatelessWidget {
               _buildActionButton(
                 context,
                 icon: Icons.share_rounded,
+                color: theme.primary,
+
                 onTap: () => _handleShare(context),
               ),
               const SizedBox(width: 10),
@@ -83,9 +87,7 @@ class StoreScreenHeader extends StatelessWidget {
               _buildActionButton(
                 context,
                 icon: isFav ? Icons.favorite : Icons.favorite_border_rounded,
-                color: isFav
-                    ? Colors.red
-                    : Colors.black,
+                color: isFav ? Colors.red : theme.primary,
                 onTap: () => _handleFavorite(context),
               ),
             ],

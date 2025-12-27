@@ -33,7 +33,7 @@ class BannerSliderViewState extends State<BannerSliderView> {
       child: Consumer<BannerController>(
         builder: (context, controller, _) {
           return Padding(
-            padding: const EdgeInsets.only(top: 30),
+            padding: const EdgeInsets.only(top: 40),
             child: _bannerCarousel(context, controller),
           );
         },
