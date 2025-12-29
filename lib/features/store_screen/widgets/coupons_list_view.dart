@@ -102,14 +102,14 @@ class CouponsListView extends StatelessWidget {
               ),
             ),
 
-            _copyButton(context, textToCopy: coupon.code),
+            _copyButton(context, textToCopy: coupon.code , couponId: coupon.id,),
           ],
         ),
       ),
     );
   }
 
-  Widget _copyButton(BuildContext context, {String? textToCopy}) {
+  Widget _copyButton(BuildContext context, {String? textToCopy , required String couponId}) {
     bool isCopied = false;
 
     return StatefulBuilder(
@@ -126,7 +126,7 @@ class CouponsListView extends StatelessWidget {
                       () => setState(() => isCopied = false),
                     );
                     if (onCouponCopied != null) {
-                      onCouponCopied!(textToCopy);
+                      onCouponCopied!(couponId);
                     }
                   }
                 },
